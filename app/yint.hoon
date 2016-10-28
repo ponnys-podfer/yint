@@ -8,6 +8,10 @@
 [. sole yint-util]
 !:
 |%
+++  move  (pair bone card)                          ::  all actions
+++  card
+  $%  {$diff $sole-effect sole-effect}              ::  todo: more cards later
+  ==
 ::  A list of all commands
 ++  command-entry  {name/tape c/$-({a/all:yint c/command:yint} a/all:yint) full-match/?}
 ++  commands
@@ -176,12 +180,13 @@
 ::
 ++  poke
   |=  *
+  ^-  {(list move) _+>.$}
   =+  ost=p.,:(head (prey /sole bow))
   [[ost %diff %sole-effect %txt "foo"]~ +>.$]
 ::
 ++  poke-sole-action
   |=  act/sole-action
-  :: ^-  {(list move) _+>.$}
+  ^-  {(list move) _+>.$}
   =/  som  (~(got by sos) ost.bow)
   ?-  act
     {$det *}
@@ -209,14 +214,12 @@
   ==
 ++  coup
   |=  {way/wire saw/(unit tang)}
-  ~&  %poke-resolved
-  ~&  way
-  ~&  ?~(saw ~ ((slog u.saw)))
+  ^-  {(list move) _+>.$}
   [~ +>.$]
 ::
 ++  peer
   |=  *
-  ~&  %peer-test
+  ^-  {(list move) _+>.$}
   =+  wel=[%txt "Welcome to Yint MUD"]
   =+  toconnect=[%txt "To connect to your existing character, enter \"connect name password\""]
   =+  tocreate=[%txt "To create a new character, enter \"create name password\""]
@@ -228,6 +231,7 @@
   [ost.bow %diff %sole-effect %mor ~[(prompt-for ost.bow) wel toconnect tocreate]]~
 ++  pull
   |=  *
+  ^-  {(list move) _+>.$}
   :: todo: add syslog messages for logout. (see player_quit() in session.rb)
   =+  player-id=(~(got by logged-in.w) ost.bow)
   :-  ~
