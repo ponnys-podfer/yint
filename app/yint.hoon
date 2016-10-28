@@ -245,14 +245,34 @@
 ++  poke-yint-import
   |=  arg/path
   ^-  {(list move) _+>.$}
-  :: todo: kick everyone off when we import
-  :: todo: write something to the syslog?
   =/  lines  .^(wain %cx arg)
   =+  mydb=(~(restore yint-db db.w) lines)
   ?~  mydb
     ~&  [%failed-to-load]
     [~ +>.$]
-  [~ +>.$(db.w (need mydb))]
+  ::  null out the character id of all logged-in users.
+  =.  logged-in.w  (~(run by logged-in.w) |=(* ~))
+  ::  grab all the active bones and reset it in the world state.
+  =+  bones=(~(tap by player-out.w))
+  =.  player-out.w  ~
+  :: todo: write something to the syslog instead of the console.
+  ~&  [%reboot-world]
+  :_  +>.$(db.w (need mydb))
+  ::  turn our list of logged in players into a set of log out messages to
+  ::  those players.
+  %+  turn
+    bones
+    |=  {a/* b/bone}
+    :*
+      b
+      %diff
+      %sole-effect
+      %mor
+      :~
+        (prompt-for b)
+        [%klr [[[`%br ~ `%r] "World being imported. Logging off..."] ~]]
+      ==
+    ==
 ++  effect  |=(fec/sole-effect [ost.bow %diff %sole-effect fec])
 ++  transmit
   |=  {inv/sole-edit mor/(list sole-effect)}
