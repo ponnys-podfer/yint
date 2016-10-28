@@ -1,5 +1,6 @@
 ::  common utilities used everywhere
 /-  yint
+/+  yint-db
 !:
 |%
 :: Add an entry to the system log.
@@ -16,4 +17,12 @@
   |=  {msg/styx a/all:yint}
   ^-  all:yint
   a(messages [i=[%klr msg] t=messages.a])
+::  Misc function that starts quiting a player's session.
+++  do-quit
+  |=  {a/all:yint}
+  ^-  all:yint
+  =+  id=(need player.a)
+  =+  record=(~(got yint-db db.a) id)
+  =.  a  (log "DISCONNECTED {<name.record>}({<id>}) from {<src.a>}" a)
+  a(player ~)
 --

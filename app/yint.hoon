@@ -20,6 +20,8 @@
   %-  limo  :~
 ::     ["examine" |=(args (~(do-look-at yint-look a) arg1.c)) %.n]
      ["look" |=(args (~(do-look-at yint-look a) arg1.c)) %.n]
+     ::  Deviates from TinyMUD: the command there is QUIT.
+     ["quit" |=(args (do-quit a)) %.y]
   ==
 :: A door which takes a
 ++  user-state
