@@ -48,6 +48,7 @@
   ++  process-line
     |=  in/tape
     ^-  all:yint
+    =.  a  (queue-styx [[[`%br ~ ~] "> "] [[~ ~ ~] in] ~] a)
     :: TODO: eat leading/trailing whitespace on |in|.
     ?~  in
       (queue "huh? (null)" a)
@@ -148,7 +149,7 @@
     :: not logged in
     [%pro [& %test "(login)> "]]
   =+  player-record=(~(got yint-db db.w) (need id))
-  [%pro [& %test "({name.player-record})> "]]
+  [%pro [& %test [[[~ ~ ~] "("] [[`%un ~ ~] name.player-record] [[~ ~ ~] ")> "] ~]]]
 :: Called after a process line to change the login state.
 ++  update-world
   |=  {old-id/(unit @sd) a/all:yint}

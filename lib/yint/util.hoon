@@ -12,4 +12,8 @@
   |=  {msg/tape a/all:yint}
   ^-  all:yint
   a(messages [i=[%txt msg] t=messages.a])
+++  queue-styx
+  |=  {msg/styx a/all:yint}
+  ^-  all:yint
+  a(messages [i=[%klr msg] t=messages.a])
 --

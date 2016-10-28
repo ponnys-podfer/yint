@@ -13,8 +13,9 @@
   =+  record=(~(got yint-db db.a) loc)
   =.  a
     ?:  (~(can-link-to yint-db db.a) player loc)
-        (queue "{<name.record>} ({<loc>})" a)
-      (queue "{<name.record>}" a)
+      =+  id=(scow %u (abs:si loc))
+      (queue-styx [[[`%br ~ ~] name.record] [[~ ~ ~] "("] [[`%un ~ ~] id] [[~ ~ ~] ")"] ~] a)
+    (queue-styx [[[`%br ~ ~] name.record] ~] a)
   =.  a
     ?:  =("" description.record)
       a
