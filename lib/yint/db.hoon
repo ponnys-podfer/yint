@@ -9,6 +9,7 @@
 :: db.rb
 ::
 
+
 :: Returns an index to a newly allocated record.
 ++  add-new-record
   ^-  {@sd database:yint}
@@ -123,7 +124,7 @@
   lhs
 :: Performs a depth first walk of the tree returning the first index to match
 :: the passed in predicate. Returns ++nothing:yint if nothing matches.  
-++  find
+++  find-record
   |=  p/$-(record:yint ?)
   ^-  @sd
   =+  x=(find-impl records.db p)
@@ -132,7 +133,7 @@
 ++  lookup-player
   |=  name/tape
   ^-  @sd
-  %-  find
+  %-  find-record
     |=  a/record:yint
     ?&
       =((dis flags.a type-mask:yint) `@u`type-player:yint)
@@ -182,6 +183,19 @@
     (flop out)
   $(next next.obj, out (scag next out))
 
+++  list-contains
+  |=  {a/(list @sd) b/@sd}
+  ^-  ?
+  !=(~ (find (limo b ~) a))
+
+:: todo: I was here yesterday. needed for could_doit, which is needed for can_doit,
+:: needed for look.
+::
+++  member
+  |=  {thing/@sd start/@sd}
+  ^-  ?
+  (list-contains (enum start) start)
+
 ++  masked-type
   |=  type/@u
   |=  i/@sd
@@ -223,6 +237,19 @@
     (is-room where)
     ?|((controls who where) (is-link-ok where))
   ==
+++  could-doit
+  |=  {who/@sd what/@sd}
+  ^-  ?
+  =+  what-record=(~(got by records.db) what)
+  ?:  ?&(!(is-room what) =(location.what-record nothing:yint))
+    %.n
+  ?:  =(key.what-record nothing:yint)
+    %.y
+  =+  player-record=(~(got by records.db) who)
+  =/  status/?  ?|(=(who key.what-record) (member key.what-record contents.player-record))
+  ?:  (is-antilock what)
+    !status
+  status
 ++  controls
   |=  {who/@sd what/@sd}
   ^-  ?

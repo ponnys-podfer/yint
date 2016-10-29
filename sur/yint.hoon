@@ -2,6 +2,18 @@
 !:
 |%
 :::
+:: constants for match.hoon
+:::
+++  match-types
+  $?  $match-player
+      $match-absolute
+      $match-me
+      $match-here
+      $match-possession
+      $match-neighbor
+      $match-exit
+  ==
+:::
 :: constants.rb
 :::
 ++  type-room  0x0

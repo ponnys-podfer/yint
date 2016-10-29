@@ -3,7 +3,7 @@
 :: This door corresponds to look.rb.
 ::
 /-  yint
-/+  yint-db, yint-util
+/+  yint-all, yint-db, yint-util
 [. yint-util]
 !:
 |_  a/all:yint
@@ -16,15 +16,24 @@
       =+  id=(scow %u (abs:si loc))
       (queue-styx [[[`%br ~ ~] name.record] [[~ ~ ~] "("] [[`%un ~ ~] id] [[~ ~ ~] ")"] ~] a)
     (queue-styx [[[`%br ~ ~] name.record] ~] a)
+  ::  If there's a description, queue it.
   =.  a
     ?:  =("" description.record)
       a
     (queue description.record a)
-  :: todo: need to deal with can_doit.
+  =^  ret  a  (~(can-doit yint-all a) player loc ~)
+  ::  todo: look_contents
   a
 
 ++  do-look-at
   |=  name/tape
+  ^-  all:yint
+  ?:  =("" name)
+    =+  p=(need player.a)
+    =+  location=(~(gotlocation yint-db db.a) p)
+    ?.  =(location nothing:yint)
+      (look-room p location)
+    a
   :: todo: this is mostly unimplemented. this core is going to be huge.
-  (look-room (need player.a) (~(gotlocation yint-db db.a) (need player.a)))
+  a
 --

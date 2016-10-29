@@ -13,7 +13,11 @@
   $%  {$diff $sole-effect sole-effect}              ::  todo: more cards later
   ==
 ::  A list of all commands
-++  command-entry  {name/tape c/$-({a/all:yint c/command:yint} a/all:yint) full-match/?}
+++  command-entry
+  $:  name/tape
+      c/$-({a/all:yint c/command:yint} a/all:yint)
+      full-match/?
+  ==
 ++  commands
   =+  args={a/all:yint c/command:yint}
   ^-  (list command-entry)
@@ -71,13 +75,13 @@
     =+  matcher=|=(e/command-entry =([~ 0] (find lower-command name.e)))
     =/  candidates/(list command-entry)  (skim commands matcher)
     ?~  candidates
-      (queue "huh" a)
+      (queue-phrase "huh" a)
     ::  We should only have one candidate; otherwise the player input is ambigious.
     ?.  =(1 (lent candidates))
-      (queue "huh" a)
+      (queue-phrase "huh" a)
     ::  Some commands are so dangerous that they require the whole thing typed exactly.
     ?.  ?|(!full-match.i.candidates =(name.i.candidates lower-command))
-      (queue "huh" a)
+      (queue-phrase "huh" a)
     (c.i.candidates a parsed)
   --
 :: A door which takes a 
@@ -122,7 +126,7 @@
     ?:  =("create" command.parsed)
       =^  id  db.a  (~(create-player yint-db db.a) arg1.parsed arg2.parsed)
       ?:  =(id nothing:yint)
-        =.  a  (queue "create-fail" a)
+        =.  a  (queue-phrase "create-fail" a)
         =.  a  (log "FAILED CREATE {<arg1.parsed>} from {<src.a>}" a)
         a
       =.  a  (log "CREATED {<arg1.parsed>}({<id>}) from {<src.a>}" a)
@@ -130,12 +134,12 @@
     ?:  =("connect" command.parsed)
       =+  id=(connect-player arg1.parsed arg2.parsed)
       ?:  =(id nothing:yint)
-        =.  a  (queue "connect-fail" a)
+        =.  a  (queue-phrase "connect-fail" a)
         =.  a  (log "FAILED CONNECT {<arg1.parsed>} from {<src.a>}" a)
         a
       =.  a  (log "CONNECTED {<arg1.parsed>}({<id>}) from {<src.a>}" a)
       (~(process-line user-state a(player `id)) "look")
-    (queue "phrase: welcome-message" a)
+    (queue-phrase "welcome-message" a)
   --
 --
 |_  $:  bow/bowl

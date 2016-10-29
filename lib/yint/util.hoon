@@ -3,16 +3,22 @@
 /+  yint-db
 !:
 |%
-:: Add an entry to the system log.
+::  Add an entry to the system log.
 ++  log
   |=  {msg/tape a/all:yint}
   ^-  all:yint
   a(syslog [i=msg t=syslog.a])
-:: Queue a message to the player.
+::  Queue raw text to the player.
 ++  queue
   |=  {msg/tape a/all:yint}
   ^-  all:yint
   a(messages [i=[%txt msg] t=messages.a])
+::  Looks up a response phrase and queues it to the active player.
+++  queue-phrase
+  |=  {msg/tape a/all:yint}
+  ^-  all:yint
+  ::  todo: actually look up message in a 
+  (queue msg a)
 ++  queue-styx
   |=  {msg/styx a/all:yint}
   ^-  all:yint
