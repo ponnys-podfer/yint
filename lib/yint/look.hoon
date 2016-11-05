@@ -3,13 +3,14 @@
 :: This door corresponds to look.rb.
 ::
 /-  yint
-/+  yint-all, yint-db, yint-util
-[. yint-util]
+/+  yint-all, yint-db, yint-match, yint-util
+[[. yint-util] match=yint-match]
 !:
 |_  a/all:yint
 ++  look-room
   |=  {player/@sd loc/@sd}
   ^-  all:yint
+::  =+  matcher=(init:match db.a player ")
   =+  record=(~(got yint-db db.a) loc)
   =.  a
     ?:  (~(can-link-to yint-db db.a) player loc)

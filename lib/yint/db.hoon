@@ -1,6 +1,6 @@
 :: All methods for accessing, modifying and validating against the database.
 ::
-:: This door corresponds to predicates.rb, db.rb and parts of player.rb.
+:: This door corresponds to predicates.rb, db.rb, util.rb and parts of player.rb.
 ::
 /-  yint
 !:
@@ -106,6 +106,37 @@
     next.db  (sun:si (add 1 (max maxid (need newid))))
     records.db  (~(put by records.db) (sun:si (need newid)) r)
   ==
+
+:::
+:: utils.rb
+:::
+
+::  note: there's no find-if in the stdlib?
+++  find-if
+  |=  {a/(list @sd) b/$-(@sd ?)}
+  |-
+  ^-  (unit @sd)
+  ?~  a
+    ~
+  ?:  (b i.a)
+    (some i.a)
+  $(a t.a)
+
+::  Remove an item from a database record's next chain.
+++  remove-first
+  |=  {first/@sd what/@sd}
+  ^-  {@sd database:yint}
+  ?:  =(first what)
+    [next:(got first) db]
+  ::  Walk the chain from first until we find the item whose next reference is what.
+  =+  before-what=(find-if (enum first) |=(a/@sd =(next:(got a) what)))
+  ?~  before-what
+    [first db]
+  =+  what-next=next:(got what)
+  =+  before-what-record=(got (need before-what))
+  :-  first
+  (put (need before-what) before-what-record(next what-next))
+
 :::
 :: player.rb
 :::
@@ -178,10 +209,10 @@
   ^-  (list @sd)
   =|  out/(list @sd)
   |-
-  =+  obj=(~(got by records.db) next)
   ?:  =(next -1)
     (flop out)
-  $(next next.obj, out (scag next out))
+  =+  obj=(~(got by records.db) next)
+  $(next next.obj, out [i=next t=out])
 
 ++  list-contains
   |=  {a/(list @sd) b/@sd}
@@ -201,7 +232,6 @@
   |=  i/@sd
   ^-  ?
   =+  a=(~(got by records.db) i)
-  :: todo: need a cast?
   =((dis flags.a type-mask:yint) type)
 ++  has-bit
   |=  mask/@u
@@ -222,7 +252,11 @@
 ++  is-room      (masked-type type-room:yint)
 ++  is-thing     (masked-type type-thing:yint)
 
-:: todo: typeof
+++  typeof
+  |=  i/@sd
+  ^-  @u
+  =+  a=(~(got by records.db) i)
+  (dis flags.a type-mask:yint)
 
 ::
 :: Predicates.rb
@@ -253,12 +287,22 @@
 ++  controls
   |=  {who/@sd what/@sd}
   ^-  ?
-  =+  what-record=(~(got by records.db) what)
   ?&
-    (gte:si what 0)
+    (gte:si 0 what)
     (lth:si what next.db)
-    ?|((is-wizard who) =(who owner.what-record))
+    ?|((is-wizard who) =(who owner:(~(got by records.db) what)))
   ==
+++  payfor
+  |=  {who/@sd cost/@ud}
+  ^-  {? database:yint}
+  ?:  (is-wizard who)
+    [%.y db]
+  =+  who-record=(got who)
+  =+  pennies=pennies.who-record
+  ?:  (gte pennies cost)
+    =.  db  (put who who-record(pennies (sub pennies cost)))
+    [%.y db]
+  [%.n db]
 ++  ok-name
   |=  name/tape
   ^-  ?

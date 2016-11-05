@@ -4,7 +4,7 @@
 
 /?    314
 /-    yint
-/+    sole, yint-db, yint-look, yint-util
+/+    sole, yint-db, yint-look, yint-move, yint-util
 [. sole yint-util]
 !:
 |%
@@ -50,11 +50,6 @@
     =+  arg1=(trim (need equals) q.s)
     =+  arg2=(trim (add 1 (need equals)) q.s)
     [command p.arg1 q.arg2]
-  ::  cass for some reason also crips the tape.
-  ++  tolower
-    |=  vib/tape
-    ^-  tape
-    (turn vib |=(a/@ ?.(&((gte a 'A') (lte a 'Z')) a (add 32 a))))
   ++  process-line
     |=  in/tape
     ^-  all:yint
@@ -68,10 +63,11 @@
       (queue "do_say: {<in>}" a)    :: todo: write say.
     ?:  =(':' i.in)
       (queue "do_pose: {<in>}" a)   :: todo: write pose.
-    :: TODO: Check movement.
+    ?:  (~(can-move yint-move a) (need player.a) in)
+      (~(do-move yint-move a) (need player.a) in)
     =+  parsed=(parse-command in)
     ::  Make a list of candidates that start with the types command (case insensitive)
-    =+  lower-command=(tolower command.parsed)
+    =+  lower-command=(cass command.parsed)
     =+  matcher=|=(e/command-entry =([~ 0] (find lower-command name.e)))
     =/  candidates/(list command-entry)  (skim commands matcher)
     ?~  candidates

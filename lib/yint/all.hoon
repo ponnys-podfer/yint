@@ -27,5 +27,21 @@
       (queue succ.thing-record a)
     a
   :: todo: Spech.new.notify_except()...
-  [%.n a]
+  [%.y a]
+
+::  Helper for mutating db records concisely.
+++  location-set
+  |=  {what/@sd c/@sd}
+  =+  old=(~(got yint-db db.a) what)
+  a(db (~(put yint-db db.a) what old(location c)))
+++  contents-set
+  |=  {what/@sd c/@sd}
+  =+  old=(~(got yint-db db.a) what)
+  a(db (~(put yint-db db.a) what old(contents c)))
+++  next-set
+  |=  {what/@sd c/@sd}
+  =+  old=(~(got yint-db db.a) what)
+  a(db (~(put yint-db db.a) what old(next c)))
+
+
 --
