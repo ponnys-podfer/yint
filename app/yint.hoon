@@ -199,7 +199,8 @@
     {$ret *}
       =+  command=(tufa buf.som)
       =+  player-id=(~(got by logged-in.w) ost.bow)
-      =+  all=(all:yint w [src.bow player-id ~])
+      =+  num=(~(raw og eny.bow) 0xff)
+      =+  all=(all:yint w [src.bow player-id num ~])
       =.  all
         ?~  player-id
           (~(process-line login-state all) command)

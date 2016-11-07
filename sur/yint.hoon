@@ -96,6 +96,10 @@
       :: logged into a player. Change this to log the user in or out of a
       :: player.
       player/(unit @sd)
+      :: [in] A 32-bit random number. This is used as entropy to the three places
+      :: we use nondeterminism. [It's theoretically possible for this to be used
+      :: twice but I don't know how to type ? ~(. og eny).]
+      rng/@u
       :: [out] Queued messages for the current connection. We separate this out
       :: from |quque| because the user may not have a player number yet. This
       :: queue should be reversed for printing.

@@ -70,4 +70,14 @@
   =+  record=(~(got yint-db db.a) id)
   =.  a  (log "DISCONNECTED {<name.record>}({<id>}) from {<src.a>}" a)
   a(player ~)
+
+
+::  Hand rolled left fold to accumulate on all.
+++  left-fold
+  |=  {l/(list @sd) a/all:yint b/$-({@sd all:yint} all:yint)}
+  ^-  all:yint
+  |-
+  ?~  l
+    a
+  $(l t.l, a (b i.l a))
 --

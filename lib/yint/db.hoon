@@ -227,6 +227,17 @@
   ^-  ?
   (list-contains (enum start) start)
 
+:: Get the location name for a thing
+++  getname
+  |=  loc/@sd
+  ^-  tape
+  ::  todo: manual phrasebook looup below.
+  ?:  =(loc nothing:yint)
+    "loc-nothing"
+  ?:  =(loc home:yint)
+    "loc-home"
+  name:(got loc)
+
 ++  masked-type
   |=  type/@u
   |=  i/@sd
@@ -284,6 +295,15 @@
   ?:  (is-antilock what)
     !status
   status
+++  can-see
+  |=  {player/@sd thing/@sd can-see-loc/?}
+  ^-  ?
+  ?:  ?|(=(player thing) (is-exit thing))
+    %.n
+  ?:  can-see-loc
+    ?|(!(is-dark thing) (controls player thing))
+  (controls player thing)                           ::  can't see loc
+
 ++  controls
   |=  {who/@sd what/@sd}
   ^-  ?

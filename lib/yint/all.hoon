@@ -29,6 +29,21 @@
   :: todo: Spech.new.notify_except()...
   [%.y a]
 
+
+:: todo: continue here tomorrow.
+::
+++  reverse
+  |=  list/@sd
+  ^-  {@sd all:yint}
+  =+  newlist=nothing:yint
+  |-
+  ?:  =(list nothing:yint)
+    [newlist a]
+  =+  rest=next:(~(got yint-db db.a) list)
+  =.  a  (next-set list newlist)
+  $(newlist list, list rest)
+
+
 ::  Helper for mutating db records concisely.
 ++  location-set
   |=  {what/@sd c/@sd}
@@ -42,6 +57,8 @@
   |=  {what/@sd c/@sd}
   =+  old=(~(got yint-db db.a) what)
   a(db (~(put yint-db db.a) what old(next c)))
-
-
+++  pennies-set
+  |=  {what/@sd c/@sd}
+  =+  old=(~(got yint-db db.a) what)
+  a(db (~(put yint-db db.a) what old(pennies c)))
 --
