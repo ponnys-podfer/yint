@@ -36,6 +36,27 @@
   :: todo: this is mostly unimplemented. this core is going to be huge.
   a
 
+++  do-score
+  |=  player/@sd
+  ^-  all:yint
+  ?:  =(--1 pennies:(~(got yint-db db.a) player))
+    (queue-phrase "you-have-a-penny" a)
+  ::  todo: pharsebook which has an argument.
+  (queue-phrase "you-have-pennies" a)
+
+++  do-inventory
+  |=  player/@sd
+  ^-  all:yint
+  =+  thing=contents:(~(got yint-db db.a) player)
+  ?:  =(thing nothing:yint)
+    =.  a  (queue-phrase "carrying-nothing" a)
+    (do-score player)
+  =.  a  (queue-phrase "carrying" a)
+  =+  items=(~(enum yint-db db.a) thing)
+  %^  left-fold  items  a
+    |=  {item/@sd a/all:yint}
+    (notify-name player item)
+
 ++  look-contents
   |=  {player/@sd loc/@sd contents-name/tape}
   ^-  all:yint

@@ -11,6 +11,7 @@
 ::
 /-  yint
 /+  yint-db, yint-util
+[. yint-util]
 !:
 |%
 ++  matcher-instance
@@ -23,6 +24,17 @@
       check-keys/?
       preferred-type/@u
   ==
+::  ++roll is confusing. I don't see how I'm supposed to pass the initial
+::  value of the accumulator, so I can't do (roll list m gate). And what's
+::  a ' _|= '?
+++  m-left-fold
+  |*  $:  a/(list)
+          state/matcher-instance
+          b/$-({* matcher-instance} matcher-instance)
+      ==
+  ?~  a
+    state
+  $(a t.a, state (b i.a state))
 ::  "Constructor" for the matcher.
 ++  init
   |=  {a/all:yint player/@sd name/tape type/@u}
@@ -43,17 +55,33 @@
   ?:  =(player-id nothing:yint)
     m
   m(exact-match player-id)
+::  Match by absolute name; ie by a numeric database identifier.
+++  match-absolute
+  ^-  matcher-instance
+  =+  match=absolute-name
+  ?:  =(match nothing:yint)
+    m
+  m(exact-match match)
+++  match-me
+  ^-  matcher-instance
+  ?~  match-name.m
+    m
+  ?.  =(match-name.m "me")
+    m
+  m(exact-match match-who.m)
+::  todo: match-here
 
-::  ++roll is confusing. I don't see how I'm supposed to pass the initial
-::  value of the accumulator, so I can't do (roll list m gate). And what's
-::  a ' _|= '?
-++  left-fold
-  |*  {a/(list) state/matcher-instance b/$-({* matcher-instance} matcher-instance)}
-  ?~  a
-    state
-  $(a t.a, state (b i.a state))
+++  match-possession
+  ^-  matcher-instance
+  (match-list contents:(~(got yint-db db.a.m) match-who.m))  
 
-:: todo: continue here; then you have match-exit and can implement can_move.
+++  match-neighbor
+  ^-  matcher-instance
+  =+  loc=(~(gotlocation yint-db db.a.m) match-who.m)
+  ?:  =(loc nothing:yint)
+    m
+  (match-list contents:(~(got yint-db db.a.m) loc))
+
 ::
 ++  match-exit
   ^-  matcher-instance
@@ -67,7 +95,7 @@
     nothing:yint
   =+  loc-record=(~(got yint-db db.a.m) loc)
   =+  l=(~(enum yint-db db.a.m) exits.loc-record)
-  %^  left-fold  l  m
+  %^  m-left-fold  l  m
     |=  {exit/@sd m/matcher-instance}
     ^-  matcher-instance
     ?:  =(exit absolute)
@@ -76,7 +104,7 @@
       m
     =+  exit-tape=name:(~(got yint-db db.a.m) exit)
     =+  tokens=(tokenize:yint-util exit-delimeter:yint exit-tape)
-    %^  left-fold  tokens  m
+    %^  m-left-fold  tokens  m
       |=  {token/tape m/matcher-instance}
       ^-  matcher-instance
       ::  todo: strip.
@@ -108,6 +136,27 @@
     exact-match.m
   last-match.m
 
+++  noisy-match-result
+  ^-  {@sd all:yint}
+  ::  get grass fails?
+  ~&  :*  %noisy-result
+          exact-match.m
+          last-match.m 
+          match-count.m
+          match-who.m
+          match-name.m
+          check-keys.m
+          preferred-type.m
+      ==
+  =+  r=match-result
+  ?:  =(r nothing:yint)
+    :-  nothing:yint
+    (queue-phrase "dont-see-that" a.m)
+  ?:  =(r ambiguous:yint)
+    :-  nothing:yint
+    (queue-phrase "which-one" a.m)  
+  [r a.m]
+
 ::::::::::::: "Private"
 
 ++  absolute-name
@@ -118,6 +167,28 @@
     nothing:yint
   (parse-dbref:yint-util t.match-name.m)
 
+
+++  match-list
+  |=  first/@sd
+  =+  a-n=absolute-name
+  =/  absolute/@sd
+    ?:  (~(controls yint-db db.a.m) match-who.m a-n)
+      a-n
+    nothing:yint
+  =+  l=(~(enum yint-db db.a.m) first)
+  %^  m-left-fold  l  m
+    |=  {i/@sd m/matcher-instance}
+    ^-  matcher-instance
+    ?:  =(i absolute)
+      m(exact-match i)
+    ?~  match-name.m
+      m
+::    ~&  [%checking name:(~(got yint-db db.a.m) i)]
+    ?:  =(name:(~(got yint-db db.a.m) i) match-name.m)
+      m(exact-match (choose-thing exact-match.m i))
+    :: todo: final else case is hard; need regexps or a custom space chomper.
+    m
+
 :: Given a choice of two things, pick one of them (one or both things may be
 :: nothing:yint)
 ++  choose-thing
@@ -127,8 +198,35 @@
     thing2
   ?:  =(thing2 nothing:yint)
     thing1
-  ::  todo: this construct seems hard to convert at first glance.
-  :: ?:  !=(preferred-type.m notype:yint)
-  ::   ?:  =((~(typeof yint-db db.a.m) thing1) preferred-type.m)
-  thing1
+  ::  note: this construct seems really bad; is there a much easier way to handle
+  ::  ratsnests of nested ifs in hoon?
+  ?:  !=(preferred-type.m notype:yint)
+    ?:  =((~(typeof yint-db db.a.m) thing1) preferred-type.m)
+      ?:  =((~(typeof yint-db db.a.m) thing2) preferred-type.m)
+        (choose-thing-part-2 thing1 thing2)
+      thing1
+    ?:  =((~(typeof yint-db db.a.m) thing2) preferred-type.m)
+      thing2
+    (choose-thing-part-2 thing1 thing2)
+  (choose-thing-part-2 thing1 thing2)
+
+++  choose-thing-part-2
+  |=  {thing1/@sd thing2/@sd}
+  ^-  @sd
+  ?:  check-keys.m
+    =+  has1=(~(could-doit yint-db db.a.m) match-who.m thing1)
+    =+  has2=(~(could-doit yint-db db.a.m) match-who.m thing2)
+    ?:  ?&(has1 !has2)
+      thing1
+    ?:  ?&(has2 !has1)
+      thing2
+    (choose-thing-part-3 thing1 thing2)
+  (choose-thing-part-3 thing1 thing2)
+
+++  choose-thing-part-3
+  |=  {thing1/@sd thing2/@sd}
+  ^-  @sd
+  ?:  =(0 (mod rng.a.m 2))
+    thing1
+  thing2
 --

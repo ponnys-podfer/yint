@@ -22,6 +22,8 @@
 ++  got
   |=  i/@sd
   ^-  record:yint
+  ?:  =(i nothing:yint)  ~|(%nothing !!)
+  ?:  =(i ambiguous:yint)  ~|(%ambiguous !!)
   (~(got by records.db) i)
 ++  put
   |=  {i/@sd r/record:yint}
@@ -29,6 +31,7 @@
   :: Only allow setting already allocated records.
   ?>  (~(has by records.db) i)
   db(records (~(put by records.db) i r))
+++  keys  ~(key by records.db)
 ++  gotname
   |=  i/@sd
   ^-  tape

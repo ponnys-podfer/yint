@@ -22,7 +22,10 @@
   =+  args={a/all:yint c/command:yint}
   ^-  (list command-entry)
   %-  limo  :~
+     ["drop" |=(args (~(do-drop yint-move a) (need player.a) arg1.c)) %.n]
 ::     ["examine" |=(args (~(do-look-at yint-look a) arg1.c)) %.n]
+     ["get" |=(args (~(do-get yint-move a) (need player.a) arg1.c)) %.n]
+     ["inventory" |=(args (~(do-inventory yint-look a) (need player.a))) %.n]
      ["look" |=(args (~(do-look-at yint-look a) arg1.c)) %.n]
      ::  Deviates from TinyMUD: the command there is QUIT.
      ["quit" |=(args (do-quit a)) %.y]
@@ -33,8 +36,6 @@
   :: Parses a command into a 3-tuple. The command goes in command/ and usually
   :: the rest is placed into arg1/. For commands which take an x=y argument, x
   :: is set to arg1/ and y to arg2/.
-  ::
-  :: todo: double check for extra spaces. i may be a moron like in login.
   ++  parse-command
     :: TODO: Strip leading and trailing whitespace.
     |=  in/tape
@@ -42,13 +43,14 @@
     =+  f=(find " " in)
     ?~  f
       [in "" ""]
-    =+  s=(trim (need f) in)
-    =+  command=p.s
-    =+  equals=(find "=" q.s)
+    =+  lhs=(trim (need f) in)
+    =+  command=p.lhs
+    =+  rhs=(trim (add 1 (need f)) in)
+    =+  equals=(find "=" q.rhs)
     ?~  equals
-      [command q.s ""]
-    =+  arg1=(trim (need equals) q.s)
-    =+  arg2=(trim (add 1 (need equals)) q.s)
+      [command q.rhs ""]
+    =+  arg1=(trim (need equals) q.rhs)
+    =+  arg2=(trim (add 1 (need equals)) q.rhs)
     [command p.arg1 q.arg2]
   ++  process-line
     |=  in/tape

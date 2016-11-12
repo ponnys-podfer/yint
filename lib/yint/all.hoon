@@ -53,6 +53,10 @@
   |=  {what/@sd c/@sd}
   =+  old=(~(got yint-db db.a) what)
   a(db (~(put yint-db db.a) what old(contents c)))
+++  exits-set
+  |=  {what/@sd c/@sd}
+  =+  old=(~(got yint-db db.a) what)
+  a(db (~(put yint-db db.a) what old(exits c)))
 ++  next-set
   |=  {what/@sd c/@sd}
   =+  old=(~(got yint-db db.a) what)
