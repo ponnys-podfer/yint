@@ -8,6 +8,25 @@
   |=  {msg/tape a/all:yint}
   ^-  all:yint
   a(syslog [i=msg t=syslog.a])
+++  phrase
+  |=  {p/@t a/all:yint}
+  ^-  tape
+  (~(got by phrases.a) p)
+++  phrase-with
+  |=  {p/@t args/(list tape) a/all:yint}
+  ^-  tape
+  =+  txt=(phrase p a)
+  |-
+  ?~  args
+    txt
+  :: Find the next '%s' in the
+  =+  pos=(find "%s" txt)
+  ?~  pos
+    ~&  [%bad-format-string txt args]
+    txt
+  =+  lhs=p:(trim (need pos) txt)
+  =+  rhs=q:(trim (add 2 (need pos)) txt)
+  $(args t.args, txt :(weld lhs i.args rhs))
 ::  Queue raw text to the player.
 ++  queue
   |=  {msg/tape a/all:yint}
@@ -15,14 +34,24 @@
   a(messages [i=[%txt msg] t=messages.a])
 ::  Looks up a response phrase and queues it to the active player.
 ++  queue-phrase
-  |=  {msg/tape a/all:yint}
+  |=  {p/@t a/all:yint}
   ^-  all:yint
-  ::  todo: actually look up message in a 
-  (queue msg a)
+  (queue (phrase p a) a)
+++  queue-phrase-with
+  |=  {p/@t args/(list tape) a/all:yint}
+  ^-  all:yint
+  (queue (phrase-with p args a) a)
 ++  queue-styx
   |=  {msg/styx a/all:yint}
   ^-  all:yint
   a(messages [i=[%klr msg] t=messages.a])
+++  queue-notification
+  |=  {player/@sd msg/styx a/all:yint}
+  ^-  all:yint
+  =+  old=(~(get by notifications.a) player)
+  ?~  old
+    a(notifications (~(put by notifications.a) player [i=[%klr msg] t=~]))
+  a(notifications (~(put by notifications.a) player [i=[%klr msg] t=(need old)]))
 ++  parse-dbref
   |=  s/tape
   ^-  @sd

@@ -40,18 +40,18 @@
   |=  player/@sd
   ^-  all:yint
   ?:  =(--1 pennies:(~(got yint-db db.a) player))
-    (queue-phrase "you-have-a-penny" a)
+    (queue-phrase 'you-have-a-penny' a)
   ::  todo: pharsebook which has an argument.
-  (queue-phrase "you-have-pennies" a)
+  (queue-phrase-with 'you-have-pennies' [(scow %ud 5) ~] a)
 
 ++  do-inventory
   |=  player/@sd
   ^-  all:yint
   =+  thing=contents:(~(got yint-db db.a) player)
   ?:  =(thing nothing:yint)
-    =.  a  (queue-phrase "carrying-nothing" a)
+    =.  a  (queue-phrase 'carrying-nothing' a)
     (do-score player)
-  =.  a  (queue-phrase "carrying" a)
+  =.  a  (queue-phrase 'carrying' a)
   =+  items=(~(enum yint-db db.a) thing)
   %^  left-fold  items  a
     |=  {item/@sd a/all:yint}

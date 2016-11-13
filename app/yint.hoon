@@ -4,7 +4,7 @@
 
 /?    314
 /-    yint
-/+    sole, yint-db, yint-look, yint-move, yint-util
+/+    sole, yint-db, yint-look, yint-move, yint-speech, yint-util
 [. sole yint-util]
 !:
 |%
@@ -62,9 +62,11 @@
     ?:  =(0 (lent in))
       (queue "huh? (empty" a)
     ?:  =('"' i.in)
-      (queue "do_say: {<in>}" a)    :: todo: write say.
+      :: todo: chop off the first character.
+      (~(do-say yint-speech a) (need player.a) in ~)
     ?:  =(':' i.in)
-      (queue "do_pose: {<in>}" a)   :: todo: write pose.
+      :: todo: chop off the first character.
+      (~(do-pose yint-speech a) (need player.a) in ~)    
     ?:  (~(can-move yint-move a) (need player.a) in)
       (~(do-move yint-move a) (need player.a) in)
     =+  parsed=(parse-command in)
@@ -73,13 +75,13 @@
     =+  matcher=|=(e/command-entry =([~ 0] (find lower-command name.e)))
     =/  candidates/(list command-entry)  (skim commands matcher)
     ?~  candidates
-      (queue-phrase "huh" a)
+      (queue-phrase 'huh' a)
     ::  We should only have one candidate; otherwise the player input is ambigious.
     ?.  =(1 (lent candidates))
-      (queue-phrase "huh" a)
+      (queue-phrase 'huh' a)
     ::  Some commands are so dangerous that they require the whole thing typed exactly.
     ?.  ?|(!full-match.i.candidates =(name.i.candidates lower-command))
-      (queue-phrase "huh" a)
+      (queue-phrase 'huh' a)
     (c.i.candidates a parsed)
   --
 :: A door which takes a 
@@ -124,7 +126,7 @@
     ?:  =("create" command.parsed)
       =^  id  db.a  (~(create-player yint-db db.a) arg1.parsed arg2.parsed)
       ?:  =(id nothing:yint)
-        =.  a  (queue-phrase "create-fail" a)
+        =.  a  (queue-phrase 'create-fail' a)
         =.  a  (log "FAILED CREATE {<arg1.parsed>} from {<src.a>}" a)
         a
       =.  a  (log "CREATED {<arg1.parsed>}({<id>}) from {<src.a>}" a)
@@ -132,12 +134,12 @@
     ?:  =("connect" command.parsed)
       =+  id=(connect-player arg1.parsed arg2.parsed)
       ?:  =(id nothing:yint)
-        =.  a  (queue-phrase "connect-fail" a)
+        =.  a  (queue-phrase 'connect-fail' a)
         =.  a  (log "FAILED CONNECT {<arg1.parsed>} from {<src.a>}" a)
         a
       =.  a  (log "CONNECTED {<arg1.parsed>}({<id>}) from {<src.a>}" a)
       (~(process-line user-state a(player `id)) "look")
-    (queue-phrase "welcome-message" a)
+    (queue-phrase 'welcome-message' a)
   --
 --
 |_  $:  bow/bowl
@@ -247,6 +249,15 @@
       player-out.w
       (~(del by player-out.w) (need player-id))
   ==
+::  Load 
+++  poke-yint-load-phrases
+  |=  arg/path
+  ^-  {(list move) _+>.$}
+  =/  j  .^(json %cx arg)
+  =+  parsed=(need ((om:jo sa:jo) j))
+  :: todo: write something to the syslog instead of the console.
+  ~&  [%loaded-phrases]
+  [~ +>.$(phrases.w parsed)]
 ++  poke-yint-import
   |=  arg/path
   ^-  {(list move) _+>.$}

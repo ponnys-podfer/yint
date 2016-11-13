@@ -87,6 +87,8 @@
       player-out/(map @sd bone)
       :: The current world database.
       db/database
+      :: Phrases.
+      phrases/(map @t tape)
   ==
 :: State which is local to a single line being processed.
 ++  io

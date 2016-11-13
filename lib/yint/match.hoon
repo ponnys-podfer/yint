@@ -151,10 +151,10 @@
   =+  r=match-result
   ?:  =(r nothing:yint)
     :-  nothing:yint
-    (queue-phrase "dont-see-that" a.m)
+    (queue-phrase 'dont-see-that' a.m)
   ?:  =(r ambiguous:yint)
     :-  nothing:yint
-    (queue-phrase "which-one" a.m)  
+    (queue-phrase 'which-one' a.m)  
   [r a.m]
 
 ::::::::::::: "Private"

@@ -57,7 +57,7 @@
           !(~(controls yint-db db.a) player loc)
           (lte pennies:(~(got yint-db db.a) player) max-pennies:yint)
       ==
-    =.  a  (queue-phrase "found-a-penny" a)
+    =.  a  (queue-phrase 'found-a-penny' a)
     =+  new-count=(sum:si --1 pennies:(~(got yint-db db.a) player))
     (~(pennies-set yint-all a) player new-count)
   a
@@ -90,19 +90,19 @@
   ?:  =(direction "home")
     =+  loc=location:(~(got yint-db db.a) player)
     ::   todo: @speech.notify_except...
-    =.  a  (queue-phrase "no-place-like-home" a)
-    =.  a  (queue-phrase "no-place-like-home" a)
-    =.  a  (queue-phrase "no-place-like-home" a)
-    =.  a  (queue-phrase "wake-up-home" a)
+    =.  a  (queue-phrase 'no-place-like-home' a)
+    =.  a  (queue-phrase 'no-place-like-home' a)
+    =.  a  (queue-phrase 'no-place-like-home' a)
+    =.  a  (queue-phrase 'wake-up-home' a)
     (send-home player)
   ::  find the exit
   =+  matcher=(init:yint-match a player direction type-exit:yint)
   =.  matcher  ~(match-exit yint-match matcher)
   =+  exit=~(match-result yint-match matcher)
   ?:  =(exit nothing:yint)
-    (queue-phrase "bad-direction" a)
+    (queue-phrase 'bad-direction' a)
   ?:  =(exit ambiguous:yint)
-    (queue-phrase "which-way" a)
+    (queue-phrase 'which-way' a)
   =^  can  a  (~(can-doit yint-all a) player exit "You can't go that way.")
   ?:  can
     (enter-room player location:(~(got yint-db db.a) exit))
@@ -122,32 +122,32 @@
   ?:  =(thing nothing:yint)
     a
   ?:  =(player location:(~(got yint-db db.a) thing))
-    (queue-phrase "already-have-it" a)
+    (queue-phrase 'already-have-it' a)
   =+  type=(~(typeof yint-db db.a) thing)
   ?:  =(type type-thing:yint)
     =^  can  a  (~(can-doit yint-all a) player thing "You can't pick that up.")
     ?:  can
       =.  a  (moveto thing player)
-      (queue-phrase "taken" a)
+      (queue-phrase 'taken' a)
     a
   ?:  =(type type-exit:yint)
     ?.  (~(controls yint-db db.a) player thing)
-      (queue-phrase "bad-pickup" a)
+      (queue-phrase 'bad-pickup' a)
     ?.  =(location:(~(got yint-db db.a) thing) nothing:yint)
-      (queue-phrase "no-get-linked-exit" a)
+      (queue-phrase 'no-get-linked-exit' a)
     =+  loc=location:(~(got yint-db db.a) player)
     ?:  =(loc nothing:yint)
       a
     =+  loc-record=(~(got yint-db db.a) loc)
     ?.  (~(member yint-db db.a) thing exits:loc-record)
-      (queue-phrase "no-get-exit-elsewhere" a)
+      (queue-phrase 'no-get-exit-elsewhere' a)
     =^  new  db.a  (~(remove-first yint-db db.a) exits:loc-record thing)
     =.  a  (~(exits-set yint-all a) loc new)
     =.  a  (~(next-set yint-all a) thing contents:(~(got yint-db db.a) player))
     =.  a  (~(contents-set yint-all a) player thing)
     =.  a  (~(location-set yint-all a) thing player)
-    (queue-phrase "exit-taken" a)
-  (queue-phrase "cant-take" a)
+    (queue-phrase 'exit-taken' a)
+  (queue-phrase 'cant-take' a)
 
 ++  do-drop
   |=  {player/@sd name/tape}
@@ -159,32 +159,32 @@
   =.  matcher  ~(match-possession yint-match matcher)
   =+  thing=~(match-result yint-match matcher)
   ?:  =(thing nothing:yint)
-    (queue-phrase "dont-have-it" a)
+    (queue-phrase 'dont-have-it' a)
   ?:  =(thing ambiguous:yint)
-    (queue-phrase "which" a)
+    (queue-phrase 'which' a)
   ?.  =(player location:(~(got yint-db db.a) thing))
     ::  Should never happen.
-    (queue-phrase "cant-drop-that" a)
+    (queue-phrase 'cant-drop-that' a)
   ?:  (~(is-exit yint-db db.a) thing)
     ?.  (~(controls yint-db db.a) player loc)       ::  special case for exits
-      (queue-phrase "no-drop-exit-here" a)
+      (queue-phrase 'no-drop-exit-here' a)
     =.  a  (moveto thing nothing:yint)              ::  take it out of the pack
     =.  a  (~(next-set yint-all a) thing exits:(~(got yint-db db.a) loc))
     =.  a  (~(exits-set yint-all a) loc thing)
-    (queue-phrase "exit-dropped" a)
+    (queue-phrase 'exit-dropped' a)
   ?:  (~(is-temple yint-db db.a) loc)
     ::  todo: is temple case.
-    (queue-phrase "todo: is-temple case" a)
+    (queue "todo: is-temple case" a)
   ?:  (~(is-sticky yint-db db.a) thing)
     =.  a  (send-home thing)
-    (queue-phrase "dropped" a)
+    (queue-phrase 'dropped' a)
   ?:  ?&  !=(location:(~(got yint-db db.a) loc) nothing:yint)
           !(~(is-sticky yint-db db.a) loc)
       ==
     =.  a  (moveto thing location:(~(got yint-db db.a) loc))
-    (queue-phrase "dropped" a)
+    (queue-phrase 'dropped' a)
   =.  a  (moveto thing loc)
-  =.  a  (queue-phrase "dropped" a)
+  =.  a  (queue-phrase 'dropped' a)
   ::  todo: @speech.notify_except....
   a
 
