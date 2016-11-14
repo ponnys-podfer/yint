@@ -179,6 +179,22 @@
   :: todo: assert that we didn't change player ids.
   -.a      :: no change
 ::
+++  build-notification
+  |=  {p/@sd q/(list sole-effect:sole)}
+  ^-  (list move)
+  =+  b=(~(get by player-out.w) p)                  ::  ensure player logged in
+  ?~  b
+    ~
+  [i=[(need b) %diff %sole-effect mor+q] t=~]
+++  make-notification-list
+  |=  a/(map @sd (list sole-effect:sole))
+  ^-  (list move)
+  =|  out/(list move)
+  ?~  a
+    ~
+  :(welp (build-notification p.n.a q.n.a) (make-notification-list l.a) (make-notification-list r.a))
+  
+::
 ::  Part X: The low level urbit interface stuff. This is mostly based off of
 ::  ~master-morzod's minimal sole app skeleton, with enough modifications to
 ::  get saving a buffer hacked in by me. Any stupidity below is entirely my
@@ -211,11 +227,16 @@
         (~(process-line user-state all) command)
       :: Update world state
       =.  w  (update-world player-id all)
-      :: todo: should echo the types command.
       =+  msgs=[i=(prompt-for ost.bow) t=(flop messages.all)]
+      =+  notifications=(make-notification-list notifications.all)
       :: todo: syslog should go to a local talk channel?
       =+  todo-syslog=(turn (flop syslog.all) |=(m/tape ~&([%log m] 0)))
-      (transmit set+~ msgs)
+      ::  Maintain the typing state.
+      =/  som  (~(got by sos) ost.bow)
+      =^  det  som  (~(transmit sole som) set+~)
+      =.  sos  (~(put by sos) ost.bow som)
+      :_  +>.$
+      [i=[ost.bow %diff %sole-effect mor+[det+det msgs]] t=notifications]
     {$clr *}
       [[[ost.bow %diff %sole-effect [%mor ~]] ~] +>.$]
   ==
@@ -289,11 +310,4 @@
         [%klr [[[`%br ~ `%r] "World being imported. Logging off..."] ~]]
       ==
     ==
-++  effect  |=(fec/sole-effect [ost.bow %diff %sole-effect fec])
-++  transmit
-  |=  {inv/sole-edit mor/(list sole-effect)}
-  =/  som  (~(got by sos) ost.bow)
-  =^  det  som  (~(transmit sole som) inv)
-  =.  sos  (~(put by sos) ost.bow som)
-  [[(effect mor+[det+det mor])]~ +>.$]
 --

@@ -10,9 +10,11 @@
   |=  {player/@sd thing/@sd default-fail-msg/tape}
   ^-  {? all:yint}
   =+  player-record=(~(got yint-db db.a) player)
+  =+  loc=location:player-record
   =+  thing-record=(~(got yint-db db.a) thing)
-  ?:  =(location.player-record nothing:yint)
+  ?:  =(loc nothing:yint)
     [%.n a]
+  =+  con-loc=contents:(~(got yint-db db.a) loc)
   ?.  (~(could-doit yint-db db.a) player thing)     :: can't do it
     =.  a
       ?.  =("" fail.thing-record)
@@ -20,13 +22,23 @@
       ?.  =("" default-fail-msg)
         (queue default-fail-msg a)
       a
-    ::  todo: Speech.new().notify_except().
+    =.  a
+      =+  ofail=ofail:thing-record
+      ?:  =("" ofail)
+        a
+      =/  msg  :(weld name:player-record " " ofail)
+      (~(notify-except yint-speech a) con-loc player msg)
     [%.n a]
   =.  a
     ?.  =("" succ.thing-record)
       (queue succ.thing-record a)
     a
-  :: todo: Spech.new.notify_except()...
+  =.  a
+    =+  osucc=osucc:thing-record
+    ?:  =("" osucc)
+      a
+    =/  msg  :(weld name:player-record " " osucc)
+    (~(notify-except yint-speech a) con-loc player msg)    
   [%.y a]
 
 

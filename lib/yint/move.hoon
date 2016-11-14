@@ -46,10 +46,27 @@
   =.  a
     ?:  =(loc old)
       a
-    ::  todo: Speech.notify_except player-left message. (starts old != NOTHING)
+    =.  a
+      ?.  ?&  !=(old nothing:yint)
+              !(~(is-dark yint-db db.a) old)
+              !(~(is-dark yint-db db.a) player)
+          ==
+        a
+      %-  ~(notify-except yint-speech a)  :*
+        contents:(~(got yint-db db.a) old)
+        player
+        (phrase-with 'player-left' [name:(~(got yint-db db.a) player) ~] a)
+      ==
     =.  a  (moveto player loc)
     ::  todo: maybe_dropto
-    ::  todo: Speech.notify_except player-arrived...
+    =.  a
+      ?.  ?&(!(~(is-dark yint-db db.a) loc) !(~(is-dark yint-db db.a) player))
+        a
+      %-  ~(notify-except yint-speech a)  :*
+        contents:(~(got yint-db db.a) loc)
+        player
+        (phrase-with 'player-arrived' [name:(~(got yint-db db.a) player) ~] a)
+      ==
     a
   =.  a  (~(look-room yint-look a) player loc)
   =/  give-penny/?  =(0 (mod rng.a penny-rate:yint))
