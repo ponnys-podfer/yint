@@ -194,7 +194,7 @@
     ""                  :: ofail
     ""                  :: osucc
     index               :: owner
-    0                   :: pennies
+    --0                 :: pennies
     type-player:yint    :: type
     password            :: password
   ==

@@ -29,6 +29,11 @@
      ["look" |=(args (~(do-look-at yint-look a) arg1.c)) %.n]
      ::  Deviates from TinyMUD: the command there is QUIT.
      ["quit" |=(args (do-quit a)) %.y]
+     ["read" |=(args (~(do-look-at yint-look a) arg1.c)) %.n]
+     ["say" |=(args (~(do-say yint-speech a) (need player.a) arg1.c arg2.c)) %.n]
+     ["score" |=(args (~(do-score yint-look a) (need player.a))) %.n]
+     ["take" |=(args (~(do-get yint-move a) (need player.a) arg1.c)) %.n]
+     ["throw" |=(args (~(do-drop yint-move a) (need player.a) arg1.c)) %.n]
   ==
 :: A door which takes a
 ++  user-state

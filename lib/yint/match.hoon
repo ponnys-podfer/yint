@@ -69,7 +69,17 @@
   ?.  =(match-name.m "me")
     m
   m(exact-match match-who.m)
-::  todo: match-here
+
+++  match-here
+  ^-  matcher-instance
+  ?~  match-name.m
+    m
+  ?.  =(match-name.m "here")
+    m
+  =+  loc=location:(~(got yint-db db.a.m) match-who.m)
+  ?.  =(loc nothing:yint)
+    m
+  m(exact-match loc)
 
 ++  match-possession
   ^-  matcher-instance

@@ -27,22 +27,37 @@
 ++  do-look-at
   |=  name/tape
   ^-  all:yint
+  =+  player=(need player.a)
   ?:  =("" name)
-    =+  p=(need player.a)
-    =+  location=(~(gotlocation yint-db db.a) p)
+    =+  location=(~(gotlocation yint-db db.a) player)
     ?.  =(location nothing:yint)
-      (look-room p location)
+      (look-room player location)
     a
-  :: todo: this is mostly unimplemented. this core is going to be huge.
-  a
+  =+  matcher=(init:yint-match a player name notype:yint)
+  =.  matcher  ~(match-exit yint-match matcher)
+  =.  matcher  ~(match-neighbor yint-match matcher)
+  =.  matcher  ~(match-possession yint-match matcher)
+  ::  todo: implement is-wizard matching here.
+  =.  matcher  ~(match-here yint-match matcher)
+  =.  matcher  ~(match-me yint-match matcher)
+  =^  thing  a  ~(noisy-match-result yint-match matcher)
+  ?:  =(thing nothing:yint)
+    a
+  =+  type=(~(typeof yint-db db.a) thing)
+  ?:  =(type type-room:yint)
+    (look-room player thing)
+  ?:  =(type type-player:yint)
+    =.  a  (look-simple player thing)
+    (look-contents player thing (phrase 'carrying-list' a))
+  (look-simple player thing)
 
 ++  do-score
   |=  player/@sd
   ^-  all:yint
-  ?:  =(--1 pennies:(~(got yint-db db.a) player))
+  =+  count=pennies:(~(got yint-db db.a) player)
+  ?:  =(--1 count)
     (queue-phrase 'you-have-a-penny' a)
-  ::  todo: pharsebook which has an argument.
-  (queue-phrase-with 'you-have-pennies' [(scow %ud 5) ~] a)
+  (queue-phrase-with 'you-have-pennies' [(scow %ud (abs:si count)) ~] a)
 
 ++  do-inventory
   |=  player/@sd
@@ -53,9 +68,10 @@
     (do-score player)
   =.  a  (queue-phrase 'carrying' a)
   =+  items=(~(enum yint-db db.a) thing)
-  %^  left-fold  items  a
+  =.  a  %^  left-fold  items  a
     |=  {item/@sd a/all:yint}
     (notify-name player item)
+  (do-score player)
 
 ++  look-contents
   |=  {player/@sd loc/@sd contents-name/tape}
@@ -88,4 +104,12 @@
     =+  id=(scow %u (abs:si thing))
     (queue-styx [[[~ ~ ~] n] [[~ ~ ~] "(#"] [[`%un ~ ~] id] [[~ ~ ~] ")"] ~] a)
   (queue n a)
+
+++  look-simple
+  |=  {player/@sd thing/@sd}
+  ^-  all:yint
+  =+  desc=description:(~(got yint-db db.a) thing)
+  ?:  =("" desc)
+    (queue-phrase 'see-nothing' a)
+  (queue desc a)
 --
