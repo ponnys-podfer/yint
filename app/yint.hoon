@@ -23,7 +23,7 @@
   ^-  (list command-entry)
   %-  limo  :~
      ["drop" |=(args (~(do-drop yint-move a) (need player.a) arg1.c)) %.n]
-::     ["examine" |=(args (~(do-look-at yint-look a) arg1.c)) %.n]
+     ["examine" |=(args (~(do-examine yint-look a) (need player.a) arg1.c)) %.n]
      ["get" |=(args (~(do-get yint-move a) (need player.a) arg1.c)) %.n]
      ["inventory" |=(args (~(do-inventory yint-look a) (need player.a))) %.n]
      ["look" |=(args (~(do-look-at yint-look a) arg1.c)) %.n]

@@ -76,8 +76,9 @@
     m
   ?.  =(match-name.m "here")
     m
+  ~&  [%considering match-name.m]
   =+  loc=location:(~(got yint-db db.a.m) match-who.m)
-  ?.  =(loc nothing:yint)
+  ?:  =(loc nothing:yint)
     m
   m(exact-match loc)
 

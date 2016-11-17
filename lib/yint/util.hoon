@@ -62,6 +62,13 @@
     nothing:yint
   (sun:si (need id))
 
+++  print-ref
+  |=  r/@sd
+  ^-  tape
+  ?:  (syn:si r)                                    ::  if positive
+    (scow %ud (abs:si r))
+  (scow %sd r)
+
 ::  "one;two;three" -> <<"one" "two" "three">>
 ++  tokenize
   |=  {b/@tD t/tape}
@@ -90,6 +97,16 @@
   =.  nedl  (cass nedl)
   =.  hstk  (cass hstk)
   =([~ 0] (find nedl hstk))
+
+:: Get the location name for a thing
+++  getname
+  |=  {loc/@sd a/all:yint}
+  ^-  tape
+  ?:  =(loc nothing:yint)
+    (phrase 'loc-nothing' a)
+  ?:  =(loc home:yint)
+    (phrase 'loc-home' a)
+  name:(~(got yint-db db.a) loc)
 
 ::  Misc function that starts quiting a player's session.
 ++  do-quit

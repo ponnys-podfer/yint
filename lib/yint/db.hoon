@@ -230,17 +230,6 @@
   ^-  ?
   (list-contains (enum start) start)
 
-:: Get the location name for a thing
-++  getname
-  |=  loc/@sd
-  ^-  tape
-  ::  todo: manual phrasebook looup below.
-  ?:  =(loc nothing:yint)
-    "loc-nothing"
-  ?:  =(loc home:yint)
-    "loc-home"
-  name:(got loc)
-
 ++  masked-type
   |=  type/@u
   |=  i/@sd
@@ -310,11 +299,23 @@
 ++  controls
   |=  {who/@sd what/@sd}
   ^-  ?
-  ?&
-    (gte:si 0 what)
-    (lth:si what next.db)
-    ?|((is-wizard who) =(who owner:(~(got by records.db) what)))
+  ::  todo: gte/lth don't exist in si and are resolving to the toplevel ones. this
+  ::  should be functionally equivalent to the other implementation but might be bug?
+  =+  r=(~(get by records.db) what)
+  ?~  r
+    %.n
+  ?:  (is-wizard who)
+    %.y
+  =(who owner:(need r))
+
+++  can-link
+  |=  {who/@sd what/@sd}
+  ^-  ?
+  ?|
+    ?&((is-exit what) =(location:(got what) nothing:yint))
+    (controls who what)
   ==
+
 ++  payfor
   |=  {who/@sd cost/@ud}
   ^-  {? database:yint}
