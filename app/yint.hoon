@@ -4,7 +4,7 @@
 
 /?    314
 /-    yint
-/+    sole, yint-db, yint-look, yint-move, yint-speech, yint-util
+/+    sole, yint-create, yint-db, yint-look, yint-move, yint-speech, yint-util
 [. sole yint-util]
 !:
 |%
@@ -22,6 +22,7 @@
   =+  args={a/all:yint c/command:yint}
   ^-  (list command-entry)
   %-  limo  :~
+     ["@create" |=(args (~(do-create yint-create a) (need player.a) arg1.c arg2.c)) %.n]
      ["drop" |=(args (~(do-drop yint-move a) (need player.a) arg1.c)) %.n]
      ["examine" |=(args (~(do-examine yint-look a) (need player.a) arg1.c)) %.n]
      ["get" |=(args (~(do-get yint-move a) (need player.a) arg1.c)) %.n]
