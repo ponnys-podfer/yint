@@ -212,15 +212,22 @@
   ^-  all:yint
   =+  first=contents:(~(got yint-db db.a) loc)
   =.  a  (~(contents-set yint-all a) loc nothing:yint)
-  =+  l=(~(enum yint-db db.a) first)
-  ::  remove the location of everything in the list.
-  =.  a  %^  left-fold  l  a
-    |=  {item/@sd a/all:yint}
-    (~(location-set yint-all a) item nothing:yint)
+  =.  a  (set-all-contents-nothing first)
   =.  a  (send-contents-move first loc dest a)
   =+  contents=contents:(~(got yint-db db.a) loc)
   =^  r  a  (~(reverse yint-all a) contents)
   (~(contents-set yint-all a) loc r)
+
+++  set-all-contents-nothing
+  |=  first/@sd
+  ::  remove the location of everything in the list.
+  =/  l/(list @sd)  (~(enum yint-db db.a) first)
+  |-
+  ?~  l
+    a
+  =+  x=i.l
+  =.  a  (~(location-set yint-all a) x nothing:yint)
+  $(l t.l)
 
 ::  Helper gate for send-contents
 ++  send-contents-move

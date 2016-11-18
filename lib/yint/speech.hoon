@@ -42,8 +42,11 @@
   |=  {first/@sd exception/@sd msg/tape}
   ^-  all:yint
   =+  l=(~(enum yint-db db.a) first)
-  %^  left-fold  l  a
-    |=  {i/@sd a/all:yint}
+  |-
+  ?~  l
+    a
+  =.  a
+    =+  i=i.l
     ?:  ?&  (~(is-player yint-db db.a) i)
             !=(i exception)
         ==
@@ -52,6 +55,7 @@
         (queue msg a)
       (queue-notification i msg a)
     a
+  $(l t.l)
 
 ++  reconstruct-message
   |=  {arg1/tape arg2/tape}

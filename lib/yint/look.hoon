@@ -130,9 +130,11 @@
       (queue-phrase 'no-exits' a)
     =.  a  (queue-phrase 'exits' a)
     =+  exits=(~(enum yint-db db.a) exits:r)
-    %^  left-fold  exits  a
-      |=  {exit/@sd a/all:yint}
-      (notify-name player exit)
+    |-
+    ?~  exits
+      a
+    =.  a  (notify-name player i.exits)
+    $(exits t.exits)      
   ?.  =(location:r nothing:yint)
     =+  n=(getname location:r a)
     =+  loc=(print-ref location:r)
@@ -186,10 +188,11 @@
     (do-score player)
   =.  a  (queue-phrase 'carrying' a)
   =+  items=(~(enum yint-db db.a) thing)
-  =.  a  %^  left-fold  items  a
-    |=  {item/@sd a/all:yint}
-    (notify-name player item)
-  (do-score player)
+  |-
+  ?~  items
+    (do-score player)
+  =.  a  (notify-name player i.items)
+  $(items t.items)
 
 ::  todo: do-find
 
@@ -201,25 +204,29 @@
     (~(controls yint-db db.a) player loc)
   ==
   =+  c=contents:(~(got yint-db db.a) loc)
-  =+  local-things=(~(enum yint-db db.a) c)
+  =/  things/(list @sd)  (~(enum yint-db db.a) c)
   =/  can-see-something/?
     %+  lien
-      local-things
+      things
       |=(thing/@sd (~(can-see yint-db db.a) player thing can-see-loc))
   ?.  can-see-something
     a
   :: something exists! show them everything
   =.  a  (queue contents-name a)
-  %^  left-fold  local-things  a
-    |=  {thing/@sd a/all:yint}
-    ?:  (~(can-see yint-db db.a) player thing can-see-loc)
-      (notify-name player thing)
+  |-
+  ?~  things
     a
+  =.  a
+    ?:  (~(can-see yint-db db.a) player i.things can-see-loc)
+      (notify-name player i.things)
+    a
+  $(things t.things)
 
 ++  notify-name
   |=  {player/@sd thing/@sd}
   ^-  all:yint
   =+  n=(getname thing a)
+  ~&  [%notify-name n]
   ?:  (~(controls yint-db db.a) player thing)
     =+  id=(print-ref thing)
     (queue-styx [[[~ ~ ~] n] [[~ ~ ~] "(#"] [[`%un ~ ~] id] [[~ ~ ~] ")"] ~] a)

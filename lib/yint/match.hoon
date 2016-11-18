@@ -24,9 +24,15 @@
       check-keys/?
       preferred-type/@u
   ==
-::  ++roll is confusing. I don't see how I'm supposed to pass the initial
-::  value of the accumulator, so I can't do (roll list m gate). And what's
-::  a ' _|= '?
+::  "Constructor" for the matcher.
+++  init
+  |=  {a/all:yint player/@sd name/tape type/@u}
+  ^-  matcher-instance
+  [a nothing:yint nothing:yint 0 player name %.n type]
+--
+|_  m/matcher-instance
+::  todo: audit all usage of m-left-fold. I deleted my other hand rolled
+::  left-fold because it broke spectacularly in the face of doors.
 ++  m-left-fold
   |*  $:  a/(list)
           state/matcher-instance
@@ -35,13 +41,6 @@
   ?~  a
     state
   $(a t.a, state (b i.a state))
-::  "Constructor" for the matcher.
-++  init
-  |=  {a/all:yint player/@sd name/tape type/@u}
-  ^-  matcher-instance
-  [a nothing:yint nothing:yint 0 player name %.n type]
---
-|_  m/matcher-instance
 ++  match-player
   ^-  matcher-instance
   ?~  match-name.m
