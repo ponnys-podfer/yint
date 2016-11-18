@@ -70,7 +70,7 @@
       osucc/tape
       owner/@sd
       pennies/@sd
-      flags/@ud
+      flags/@u
       password/tape
   ==
 :: A TinyMUD database is a map of integers to records.

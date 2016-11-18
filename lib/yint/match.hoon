@@ -75,7 +75,6 @@
     m
   ?.  =(match-name.m "here")
     m
-  ~&  [%considering match-name.m]
   =+  loc=location:(~(got yint-db db.a.m) match-who.m)
   ?:  =(loc nothing:yint)
     m
@@ -193,7 +192,6 @@
       m(exact-match i)
     ?~  match-name.m
       m
-::    ~&  [%checking name:(~(got yint-db db.a.m) i)]
     ?:  =(name:(~(got yint-db db.a.m) i) match-name.m)
       m(exact-match (choose-thing exact-match.m i))
     :: todo: final else case is hard; need regexps or a custom space chomper.

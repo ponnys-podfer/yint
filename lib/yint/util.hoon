@@ -31,7 +31,6 @@
 ++  queue
   |=  {msg/tape a/all:yint}
   ^-  all:yint
-  ~&  [%queue msg]
   a(messages [i=[%txt msg] t=messages.a])
 ::  Looks up a response phrase and queues it to the active player.
 ++  queue-phrase
@@ -58,7 +57,7 @@
   ^-  @sd
   ?~  s
     nothing:yint
-  =+  id=(rust s ;~(pfix hax dim:ag))
+  =+  id=(rust s dim:ag)
   ?~  id
     nothing:yint
   (sun:si (need id))

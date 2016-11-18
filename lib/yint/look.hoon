@@ -226,7 +226,6 @@
   |=  {player/@sd thing/@sd}
   ^-  all:yint
   =+  n=(getname thing a)
-  ~&  [%notify-name n]
   ?:  (~(controls yint-db db.a) player thing)
     =+  id=(print-ref thing)
     (queue-styx [[[~ ~ ~] n] [[~ ~ ~] "(#"] [[`%un ~ ~] id] [[~ ~ ~] ")"] ~] a)

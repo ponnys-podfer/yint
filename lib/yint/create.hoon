@@ -53,6 +53,19 @@
     type-thing:yint     :: type
     ""                  :: password
   ==
+  ::  todo: if I could reliably set some of those default values to NOTHING, I could
+  ::  use the following and cut down duplicates.
+  :: =.  r  %=  r
+  ::   name      name
+  ::   location  player
+  ::   contents  nothing:yint
+  ::   exits     exits
+  ::   next      contents:player-r
+  ::   key       nothing:yint
+  ::   owner     player
+  ::   pennies   pennies
+  ::   flags     type-thing:yint
+  :: ==
   =.  db.a  (~(put yint-db db.a) index r)
   =.  a  (~(contents-set yint-all a) player index)
   (queue-phrase 'created' a)
@@ -63,4 +76,35 @@
   %+  div
     (sub cost endowment-calculator:yint)
     endowment-calculator:yint
+
+++  do-dig
+  |=  {player/@sd name/tape}
+  ^-  all:yint
+  ?:  =(name "")
+    (queue-phrase 'dig-what' a)
+  ?.  (~(ok-name yint-db db.a) name)
+    (queue-phrase 'silly-room-name' a)
+  =^  can-pay  db.a  (~(payfor yint-db db.a) player room-cost:yint)
+  ?.  can-pay
+    (queue-phrase 'sorry-poor-dig' a)
+  =^  index  db.a  ~(add-new-record yint-db db.a)
+  =/  r  %-  record:yint  :*
+    name                :: name
+    ""                  :: description
+    nothing:yint        :: location
+    nothing:yint        :: contents
+    nothing:yint        :: exits
+    nothing:yint        :: next
+    nothing:yint        :: key
+    ""                  :: fail
+    ""                  :: succ
+    ""                  :: ofail
+    ""                  :: osucc
+    player              :: owner
+    --0                 :: pennies
+    type-room:yint      :: type
+    ""                  :: password
+  ==
+  =.  db.a  (~(put yint-db db.a) index r)
+  (queue-phrase-with 'created-room' [name (print-ref index) ~] a)
 --

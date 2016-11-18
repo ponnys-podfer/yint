@@ -23,6 +23,7 @@
   ^-  (list command-entry)
   %-  limo  :~
      ["@create" |=(args (~(do-create yint-create a) (need player.a) arg1.c arg2.c)) %.n]
+     ["@dig" |=(args (~(do-dig yint-create a) (need player.a) arg1.c)) %.n]
      ["drop" |=(args (~(do-drop yint-move a) (need player.a) arg1.c)) %.n]
      ["examine" |=(args (~(do-examine yint-look a) (need player.a) arg1.c)) %.n]
      ["get" |=(args (~(do-get yint-move a) (need player.a) arg1.c)) %.n]
