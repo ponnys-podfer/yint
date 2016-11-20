@@ -73,6 +73,10 @@
   |=  {what/@sd c/@sd}
   =+  old=(~(got yint-db db.a) what)
   a(db (~(put yint-db db.a) what old(next c)))
+++  owner-set
+  |=  {what/@sd c/@sd}
+  =+  old=(~(got yint-db db.a) what)
+  a(db (~(put yint-db db.a) what old(owner c)))
 ++  pennies-set
   |=  {what/@sd c/@sd}
   =+  old=(~(got yint-db db.a) what)

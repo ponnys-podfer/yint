@@ -28,7 +28,9 @@
      ["examine" |=(args (~(do-examine yint-look a) (need player.a) arg1.c)) %.n]
      ["get" |=(args (~(do-get yint-move a) (need player.a) arg1.c)) %.n]
      ["inventory" |=(args (~(do-inventory yint-look a) (need player.a))) %.n]
+     ["@link" |=(args (~(do-link yint-create a) (need player.a) arg1.c arg2.c)) %.n]
      ["look" |=(args (~(do-look-at yint-look a) arg1.c)) %.n]
+     ["@open" |=(args (~(do-open yint-create a) (need player.a) arg1.c arg2.c)) %.n]
      ::  Deviates from TinyMUD: the command there is QUIT.
      ["quit" |=(args (do-quit a)) %.y]
      ["read" |=(args (~(do-look-at yint-look a) arg1.c)) %.n]
