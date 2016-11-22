@@ -82,16 +82,7 @@
   ?:  =(nothing:yint room)
     a
   =+  matcher=(init:yint-match a player name type-exit:yint)
-  =.  matcher  ~(match-exit yint-match matcher)
-  =.  matcher  ~(match-neighbor yint-match matcher)
-  =.  matcher  ~(match-possession yint-match matcher)
-  =.  matcher  ~(match-me yint-match matcher)
-  =.  matcher  ~(match-here yint-match matcher)
-  =.  matcher
-    ?.  (~(is-wizard yint-db db.a) player)
-      matcher
-    =.  matcher  ~(match-absolute yint-match matcher)
-    ~(match-player yint-match matcher)
+  =.  matcher  ~(match-everything yint-match matcher)
   =^  thing  a  ~(noisy-match-result yint-match matcher)
   ?:  =(thing nothing:yint)
     a

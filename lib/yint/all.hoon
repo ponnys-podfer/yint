@@ -57,6 +57,14 @@
 
 
 ::  Helper for mutating db records concisely.
+++  name-set
+  |=  {what/@sd c/tape}
+  =+  old=(~(got yint-db db.a) what)
+  a(db (~(put yint-db db.a) what old(name c)))
+++  description-set
+  |=  {what/@sd c/tape}
+  =+  old=(~(got yint-db db.a) what)
+  a(db (~(put yint-db db.a) what old(description c)))
 ++  location-set
   |=  {what/@sd c/@sd}
   =+  old=(~(got yint-db db.a) what)
@@ -73,6 +81,26 @@
   |=  {what/@sd c/@sd}
   =+  old=(~(got yint-db db.a) what)
   a(db (~(put yint-db db.a) what old(next c)))
+++  key-set
+  |=  {what/@sd c/@sd}
+  =+  old=(~(got yint-db db.a) what)
+  a(db (~(put yint-db db.a) what old(key c)))
+++  fail-set
+  |=  {what/@sd c/tape}
+  =+  old=(~(got yint-db db.a) what)
+  a(db (~(put yint-db db.a) what old(fail c)))
+++  success-set
+  |=  {what/@sd c/tape}
+  =+  old=(~(got yint-db db.a) what)
+  a(db (~(put yint-db db.a) what old(succ c)))
+++  osuccess-set
+  |=  {what/@sd c/tape}
+  =+  old=(~(got yint-db db.a) what)
+  a(db (~(put yint-db db.a) what old(osucc c)))
+++  ofail-set
+  |=  {what/@sd c/tape}
+  =+  old=(~(got yint-db db.a) what)
+  a(db (~(put yint-db db.a) what old(ofail c)))
 ++  owner-set
   |=  {what/@sd c/@sd}
   =+  old=(~(got yint-db db.a) what)
@@ -81,4 +109,19 @@
   |=  {what/@sd c/@sd}
   =+  old=(~(got yint-db db.a) what)
   a(db (~(put yint-db db.a) what old(pennies c)))
+
+++  flag-set
+  |=  {what/@sd f/@u}
+  =+  old=(~(got yint-db db.a) what)
+  =+  new=(con flags:old f)
+  a(db (~(put yint-db db.a) what old(flags new)))
+
+::  not a general &= ~ function. Only goes up to 0x100, which is what is used
+::  in our bitfield.
+++  flag-unset
+  |=  {what/@sd f/@u}
+  =+  old=(~(got yint-db db.a) what)
+  =+  new=(dis flags:old (not 0 9 f))
+  a(db (~(put yint-db db.a) what old(flags new)))
+
 --

@@ -129,6 +129,20 @@
         m(exact-match (choose-thing exact-match.m exit))
       m
 
+++  match-everything
+  ^-  matcher-instance
+  =.  m  ~(match-exit yint-match m)
+  =.  m  ~(match-neighbor yint-match m)
+  =.  m  ~(match-possession yint-match m)
+  =.  m  ~(match-me yint-match m)
+  =.  m  ~(match-here yint-match m)
+  =.  m
+    ?.  (~(is-wizard yint-db db.a.m) match-who.m)
+      m
+    =.  m  ~(match-absolute yint-match m)
+    ~(match-player yint-match m)
+  m
+
 ++  match-result
   ^-  @sd
   ?.  =(exact-match.m nothing:yint)

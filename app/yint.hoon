@@ -4,7 +4,7 @@
 
 /?    314
 /-    yint
-/+    sole, yint-create, yint-db, yint-look, yint-move, yint-speech, yint-util
+/+    sole, yint-create, yint-db, yint-look, yint-move, yint-set, yint-speech, yint-util
 [. sole yint-util]
 !:
 |%
@@ -22,22 +22,32 @@
   =+  args={a/all:yint c/command:yint}
   ^-  (list command-entry)
   %-  limo  :~
+     ["@chown" |=(args (~(do-chown yint-set a) (need player.a) arg1.c arg2.c)) %.n]
      ["@create" |=(args (~(do-create yint-create a) (need player.a) arg1.c arg2.c)) %.n]
+     ["@describe" |=(args (~(do-describe yint-set a) (need player.a) arg1.c arg2.c)) %.n]
      ["@dig" |=(args (~(do-dig yint-create a) (need player.a) arg1.c)) %.n]
      ["drop" |=(args (~(do-drop yint-move a) (need player.a) arg1.c)) %.n]
      ["examine" |=(args (~(do-examine yint-look a) (need player.a) arg1.c)) %.n]
+     ["@fail" |=(args (~(do-fail yint-set a) (need player.a) arg1.c arg2.c)) %.n]
      ["get" |=(args (~(do-get yint-move a) (need player.a) arg1.c)) %.n]
      ["inventory" |=(args (~(do-inventory yint-look a) (need player.a))) %.n]
      ["@link" |=(args (~(do-link yint-create a) (need player.a) arg1.c arg2.c)) %.n]
+     ["@lock" |=(args (~(do-lock yint-set a) (need player.a) arg1.c arg2.c)) %.n]
      ["look" |=(args (~(do-look-at yint-look a) arg1.c)) %.n]
+     ["@name" |=(args (~(do-name yint-set a) (need player.a) arg1.c arg2.c)) %.n]
+     ["@ofail" |=(args (~(do-ofail yint-set a) (need player.a) arg1.c arg2.c)) %.n]
      ["@open" |=(args (~(do-open yint-create a) (need player.a) arg1.c arg2.c)) %.n]
+     ["@osuccess" |=(args (~(do-osuccess yint-set a) (need player.a) arg1.c arg2.c)) %.n]
      ::  Deviates from TinyMUD: the command there is QUIT.
      ["quit" |=(args (do-quit a)) %.y]
      ["read" |=(args (~(do-look-at yint-look a) arg1.c)) %.n]
      ["say" |=(args (~(do-say yint-speech a) (need player.a) arg1.c arg2.c)) %.n]
      ["score" |=(args (~(do-score yint-look a) (need player.a))) %.n]
+     ["@success" |=(args (~(do-success yint-set a) (need player.a) arg1.c arg2.c)) %.n]
      ["take" |=(args (~(do-get yint-move a) (need player.a) arg1.c)) %.n]
      ["throw" |=(args (~(do-drop yint-move a) (need player.a) arg1.c)) %.n]
+     ["@unlink" |=(args (~(do-unlink yint-set a) (need player.a) arg1.c)) %.n]
+     ["@unlock" |=(args (~(do-unlock yint-set a) (need player.a) arg1.c)) %.n]
   ==
 :: A door which takes a
 ++  user-state
