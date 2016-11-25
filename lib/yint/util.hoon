@@ -31,7 +31,11 @@
 ++  queue
   |=  {msg/tape a/all:yint}
   ^-  all:yint
-  a(messages [i=[%txt msg] t=messages.a])
+  =+  lines=(tokenize `@`10 msg)
+  |-
+  ?~  lines
+    a
+  $(messages.a [i=[%txt i.lines] t=messages.a], lines t.lines)
 ::  Looks up a response phrase and queues it to the active player.
 ++  queue-phrase
   |=  {p/@t a/all:yint}

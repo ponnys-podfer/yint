@@ -9,6 +9,7 @@
 :: db.rb
 ::
 
+++  end-str  "***END OF DUMP***"
 
 :: Returns an index to a newly allocated record.
 ++  add-new-record
@@ -82,7 +83,7 @@
   =+  lines=in
   |-
   =^  l  lines  (next-line-as-tape lines)
-  ?:  =(l "***END OF DUMP***")
+  ?:  =(l end-str)
     `db
   =+  newid=(rust l ;~(pfix hax dim:ag))
   ?~  newid
@@ -108,6 +109,54 @@
     maxid  (max maxid (need newid))
     next.db  (sun:si (add 1 (max maxid (need newid))))
     records.db  (~(put by records.db) (sun:si (need newid)) r)
+  ==
+
+++  serialize
+  ^-  wall
+  %+  weld
+    %+  roll  (gulf 0 (abs:si next.db))
+      |=  {id/@ud lines/wall}
+      (weld lines (save-object (sun:si id)))
+    (limo "***END OF DUMP***" "" ~)
+
+++  pushl
+  |=  {n/tape lines/wall}
+  ^-  wall
+  [i=n t=lines]
+
+++  print-ref
+  |=  r/@sd
+  ^-  tape
+  ?:  (syn:si r)                                    ::  if positive
+    (scow %ud (abs:si r))
+  (scow %sd r)
+
+++  save-object
+  |=  {id/@sd}
+  ^-  wall
+  =+  ref=(~(get by records.db) id)
+  ?~  ref
+    ~
+  =+  o=(need ref)
+  =|  l/wall
+  ;:  pushl
+    (weld "#" (print-ref id))
+    name:o
+    description:o
+    (print-ref location:o)
+    (print-ref contents:o)
+    (print-ref exits:o)
+    (print-ref next:o)
+    (print-ref key:o)
+    fail:o
+    succ:o
+    ofail:o
+    osucc:o
+    (print-ref owner:o)
+    (print-ref pennies:o)
+    (scow %ud flags:o)
+    password:o
+    ~
   ==
 
 :::

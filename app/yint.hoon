@@ -4,13 +4,14 @@
 
 /?    314
 /-    yint
-/+    sole, yint-create, yint-db, yint-look, yint-move, yint-set, yint-speech, yint-util
+/+    sole, yint-create, yint-db, yint-look, yint-help, yint-move, yint-set, yint-speech, yint-util
 [. sole yint-util]
 !:
 |%
 ++  move  (pair bone card)                          ::  all actions
 ++  card
   $%  {$diff $sole-effect sole-effect}              ::  todo: more cards later
+      {$info wire @p @tas nori}                     ::  write to fs
   ==
 ::  A list of all commands
 ++  command-entry
@@ -30,10 +31,13 @@
      ["examine" |=(args (~(do-examine yint-look a) (need player.a) arg1.c)) %.n]
      ["@fail" |=(args (~(do-fail yint-set a) (need player.a) arg1.c arg2.c)) %.n]
      ["get" |=(args (~(do-get yint-move a) (need player.a) arg1.c)) %.n]
+     ["goto" |=(args (~(do-move yint-move a) (need player.a) arg1.c)) %.n]
+     ["help" |=(args (~(do-help yint-help a) (need player.a))) %.n]
      ["inventory" |=(args (~(do-inventory yint-look a) (need player.a))) %.n]
      ["@link" |=(args (~(do-link yint-create a) (need player.a) arg1.c arg2.c)) %.n]
      ["@lock" |=(args (~(do-lock yint-set a) (need player.a) arg1.c arg2.c)) %.n]
      ["look" |=(args (~(do-look-at yint-look a) arg1.c)) %.n]
+     ["move" |=(args (~(do-move yint-move a) (need player.a) arg1.c)) %.n]
      ["@name" |=(args (~(do-name yint-set a) (need player.a) arg1.c arg2.c)) %.n]
      ["@ofail" |=(args (~(do-ofail yint-set a) (need player.a) arg1.c arg2.c)) %.n]
      ["@open" |=(args (~(do-open yint-create a) (need player.a) arg1.c arg2.c)) %.n]
@@ -81,11 +85,9 @@
     ?:  =(0 (lent in))
       (queue "huh? (empty" a)
     ?:  =('"' i.in)
-      :: todo: chop off the first character.
-      (~(do-say yint-speech a) (need player.a) in ~)
+      (~(do-say yint-speech a) (need player.a) t.in ~)
     ?:  =(':' i.in)
-      :: todo: chop off the first character.
-      (~(do-pose yint-speech a) (need player.a) in ~)    
+      (~(do-pose yint-speech a) (need player.a) t.in ~)    
     ?:  (~(can-move yint-move a) (need player.a) in)
       (~(do-move yint-move a) (need player.a) in)
     =+  parsed=(parse-command in)
@@ -329,4 +331,11 @@
         [%klr [[[`%br ~ `%r] "World being imported. Logging off..."] ~]]
       ==
     ==
+++  poke-yint-export
+  |=  man/knot
+  ^-  {(list move) _+>.$}
+  =/  paf/path  /(scot %p our.bow)/home/(scot %da now.bow)/yint/[man]/txt
+  =/  data/wall  ~(serialize yint-db db.w)
+  =+  to=(foal paf [%txt !>((turn data crip))])
+  [[ost.bow %info /jamfile our.bow to]~ +>.$]
 --
