@@ -18,7 +18,7 @@
     " say <message>"  nl
     " inventory"  nl
     " help"  nl
-    " @describe me = <description>"  nl
+    " @describe me=<description>"  nl
     " home --- go home"  nl
     "You can also say things by starting a line with '\"'"  nl
     "You can pose for other players by starting a line with ':'"  nl

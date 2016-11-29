@@ -161,16 +161,6 @@
 
 ++  noisy-match-result
   ^-  {@sd all:yint}
-  ::  get grass fails?
-  ~&  :*  %noisy-result
-          exact-match.m
-          last-match.m 
-          match-count.m
-          match-who.m
-          match-name.m
-          check-keys.m
-          preferred-type.m
-      ==
   =+  r=match-result
   ?:  =(r nothing:yint)
     :-  nothing:yint
