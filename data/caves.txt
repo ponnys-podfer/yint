@@ -1,0 +1,369 @@
+#0
+Misty Cavern
+You are standing in a circular pool. You are knee-deep in a cold, blue mist. (If you drop an object here, or set its home to be here, you probably won't be able to find it again.) To your south is a torch lined tunnel.
+-1
+-1
+5
+-1
+-1
+
+
+
+is briefly visible through the mist.
+1
+0
+0
+
+#1
+Wizard
+You see The Wizard.
+19
+-1
+19
+-1
+-1
+"Get an honest job!" snarls the Wizard.
+
+foolishly tried to rob the Wizard!
+
+1
+0
+19
+changethispassword
+#2
+mist;blue mist;cold mist
+
+-1
+-1
+-1
+-1
+-1
+The mist swirls around hypnotically. You might want to get out of here.
+
+sways in the mist.
+
+1
+0
+2
+
+#3
+torch;torches
+Flames sway back and forth, fighting the darkness.
+-1
+-1
+-1
+2
+-1
+The torches illuminate a path south.
+
+
+
+1
+0
+2
+
+#4
+Torch Lined Tunnel
+You only have to crouch slightly as you make your way through the tunnel. The main tunnel runs north and south, but there looks like a crevice that would take you west.
+-1
+-1
+14
+-1
+-1
+
+
+
+
+1
+0
+0
+
+#5
+s;south;tunnel
+It's hard to see the bright tunnel due to the contrast with the darkness you stand in.
+4
+-1
+-1
+3
+-1
+
+
+
+
+1
+0
+2
+
+#6
+n;north
+
+0
+-1
+-1
+-1
+-1
+
+
+
+
+1
+0
+2
+
+#7
+w;west;crevice
+
+8
+-1
+-1
+6
+-1
+
+You shimmy your way through the crevice.
+
+shimmies through the crevice.
+1
+0
+2
+
+#8
+Underground Lake
+You stand before a small underground lake. To the south is a giant waterfall. To the east, you can see light through a crack.
+-1
+-1
+11
+-1
+-1
+
+
+
+
+1
+0
+0
+
+#9
+e;crack
+
+4
+-1
+-1
+-1
+-1
+
+You carefully navigate the crack back to the main path.
+
+
+1
+0
+2
+
+#10
+Under the Waterfall
+You are standing under a torrent of water. You can't see much, but you're pretty sure you could leave to the north.
+-1
+-1
+12
+-1
+-1
+
+
+
+
+1
+0
+0
+
+#11
+s;south;waterfall
+
+10
+-1
+-1
+9
+-1
+
+You run right into the waterfall.
+
+goes and plays in the waterfall.
+1
+0
+2
+
+#12
+n;north;leave
+You can't actually see north (you can't really see anything!), but you're pretty sure you could leave north.
+8
+-1
+-1
+-1
+-1
+
+
+
+
+1
+0
+2
+
+#13
+Cozy Cave
+This cave has been turned into a cozy living space. The walls are adorned with banners. At the south end of the "room" is a fireplace carved into the side of the wall. In the center is a kneeling table with a tea set. To the north is a tunnel with torches on either side.
+-1
+-1
+22
+-1
+-1
+
+
+
+
+1
+0
+0
+
+#14
+s;south
+
+13
+-1
+-1
+7
+-1
+
+
+
+
+1
+0
+2
+
+#15
+n;north;tunnel
+
+4
+-1
+-1
+-1
+-1
+
+
+
+
+1
+0
+2
+
+#16
+s;fire;fireplace
+The flickering fire lights the cave, giving it a homey feel. The fireplace appears to have some sort of chimney for exhaust...
+19
+-1
+-1
+15
+1
+You warm yourself by the fire.
+
+stands next to the fire.
+jumps into the fireplace and disappears!
+1
+0
+2
+
+#17
+table
+The oak surface of the table only has a few scratches. It is in good shape for its age.
+-1
+-1
+-1
+16
+-1
+
+
+
+
+1
+0
+2
+
+#18
+kneel;sit
+
+-1
+-1
+-1
+17
+-1
+You kneel at the table.
+
+kneels at the table.
+
+1
+0
+2
+
+#19
+Wizard Cave
+You are in a giant cave. The ceiling is filled with smoke. A hole with smoke coming from it leads down.
+-1
+1
+20
+-1
+-1
+
+
+
+
+1
+0
+0
+
+#20
+d;down;smoke;hole
+
+13
+-1
+-1
+-1
+-1
+
+You climb down through the hole.
+
+
+1
+0
+2
+
+#21
+pour;drink;tea;tea set
+A Delftware teapot with matching cups. Steam rises from the spout.
+-1
+-1
+-1
+18
+-1
+You pour yourself a cup of tea and sip it.
+
+pours themselves a cup of tea.
+
+1
+0
+2
+
+#22
+banner;wall;walls
+Banners of blue and gold hang on the walls.
+-1
+-1
+-1
+21
+-1
+
+
+
+
+1
+0
+2
+
+***END OF DUMP***
