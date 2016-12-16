@@ -4,7 +4,7 @@
 ::
 /-  yint
 /+  yint-all, yint-util
-[. yint-util]
+=,  yint-util
 !:
 |_  a/all:yint
 ::

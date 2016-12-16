@@ -3,7 +3,8 @@
 ::
 /-  yint
 /+  yint-all, yint-db, yint-match, yint-util
-[[. yint-util] match=yint-match]
+=,  yint-util
+=,  yint-match
 !:
 |_  a/all:yint
 

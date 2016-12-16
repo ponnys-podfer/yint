@@ -1,6 +1,7 @@
 ::  common utilities used everywhere
 /-  yint
 /+  yint-db
+=,  zuse
 !:
 |%
 ::  Add an entry to the system log.
@@ -46,11 +47,11 @@
   ^-  all:yint
   (queue (phrase-with p args a) a)
 ++  queue-styx
-  |=  {msg/styx a/all:yint}
+  |=  {msg/styx:^dill a/all:yint}
   ^-  all:yint
   a(messages [i=[%klr msg] t=messages.a])
 ++  queue-notification
-  |=  {player/@sd msg/styx a/all:yint}
+  |=  {player/@sd msg/styx:^dill a/all:yint}
   ^-  all:yint
   =+  old=(~(get by notifications.a) player)
   ?~  old

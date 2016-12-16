@@ -5,7 +5,11 @@
 /?    314
 /-    yint
 /+    sole, yint-create, yint-db, yint-look, yint-help, yint-move, yint-set, yint-speech, yint-util
-[. sole yint-util]
+=,  ^clay
+=,  ^gall
+=,  sole
+=,  yint-util
+=,  space:userlib
 !:
 |%
 ++  move  (pair bone card)                          ::  all actions
@@ -221,12 +225,6 @@
 ::  get saving a buffer hacked in by me. Any stupidity below is entirely my
 ::  fault.
 ::
-++  poke
-  |=  *
-  ^-  {(list move) _+>.$}
-  =+  ost=p.,:(head (prey /sole bow))
-  [[ost %diff %sole-effect %txt "foo"]~ +>.$]
-::
 ++  poke-sole-action
   |=  act/sole-action
   ^-  {(list move) _+>.$}
@@ -295,8 +293,9 @@
 ++  poke-yint-load-phrases
   |=  arg/path
   ^-  {(list move) _+>.$}
+  =,  dejs:format
   =/  j  .^(json %cx arg)
-  =+  parsed=(need ((om:jo sa:jo) j))
+  =+  parsed=((om sa) j)
   :: todo: write something to the syslog instead of the console.
   ~&  [%loaded-phrases]
   [~ +>.$(phrases.w parsed)]

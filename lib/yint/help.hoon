@@ -1,11 +1,12 @@
 /-  yint
-/+  yint-all, yint-db, yint-match, yint-util
-[[. yint-util] match=yint-match]
+/+  yint-all, yint-util
+=,  yint-util
 !:
 |_  a/all:yint
 
 :: Quickly putting together a help screen.
-
+::
+:: todo: this was rushed for release; come back later.
 ++  do-help
   |=  player/@sd
   ^-  all:yint

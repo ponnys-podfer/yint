@@ -11,7 +11,7 @@
 ::
 /-  yint
 /+  yint-db, yint-util
-[. yint-util]
+=,  yint-util
 !:
 |%
 ++  matcher-instance

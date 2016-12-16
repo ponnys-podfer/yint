@@ -3,7 +3,7 @@
 ::  mutating function. This is a catchall door which takes care of that.
 /-  yint
 /+  yint-db, yint-util
-[. yint-util]
+=,  yint-util
 !:
 |_  a/all:yint
 ++  can-doit
