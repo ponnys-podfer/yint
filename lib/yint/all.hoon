@@ -22,27 +22,19 @@
       ?.  =("" default-fail-msg)
         (queue default-fail-msg a)
       a
-    =.  a
-      =+  ofail=ofail:thing-record
-      ?:  =("" ofail)
-        a
+    =+  ofail=ofail:thing-record
+    =?  a  !=("" ofail)
       =/  msg  :(weld name:player-record " " ofail)
       (~(notify-except yint-speech a) con-loc player msg)
     [%.n a]
-  =.  a
-    ?.  =("" succ.thing-record)
-      (queue succ.thing-record a)
-    a
-  =.  a
-    =+  osucc=osucc:thing-record
-    ?:  =("" osucc)
-      a
+  =?  a  !=("" succ.thing-record)
+    (queue succ.thing-record a)
+  =+  osucc=osucc:thing-record
+  =?  a  !=("" osucc)
     =/  msg  :(weld name:player-record " " osucc)
-    (~(notify-except yint-speech a) con-loc player msg)    
+    (~(notify-except yint-speech a) con-loc player msg)
   [%.y a]
 
-
-:: todo: continue here tomorrow.
 ::
 ++  reverse
   |=  list/@sd

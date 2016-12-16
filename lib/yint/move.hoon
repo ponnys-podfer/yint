@@ -16,19 +16,15 @@
   ^-  all:yint
   =+  loc=location:(~(got yint-db db.a) what)
   ::  remove what from old location
-  =.  a
-    ?:  =(loc nothing:yint)
-      a
-    =+  loc-record=(~(got yint-db db.a) loc)      
+  =?  a  !=(loc nothing:yint)
+    =+  loc-record=(~(got yint-db db.a) loc)
     =+  contents-loc=contents:loc-record
     =^  new  db.a  (~(remove-first yint-db db.a) contents-loc what)
     (~(contents-set yint-all a) loc new)
   :: test for special case
   ?:  =(where nothing:yint)
     (~(location-set yint-all a) loc nothing:yint)
-  =.  where
-    ?.  =(where home:yint)
-      where
+  =?  where  =(where home:yint)
     exits:(~(got yint-db db.a) what)
   =+  where-contents=contents:(~(got yint-db db.a) where)
   =.  a  (~(next-set yint-all a) what where-contents)
@@ -38,14 +34,10 @@
 ++  enter-room
   |=  {player/@sd loc/@sd}
   ^-  all:yint
-  =.  loc
-    ?:  =(loc home:yint)
-      exits:(~(got yint-db db.a) loc)
-    loc
+  =?  loc  =(loc home:yint)
+    exits:(~(got yint-db db.a) loc)
   =+  old=location:(~(got yint-db db.a) player)
-  =.  a
-    ?:  =(loc old)
-      a
+  =?  a  !=(loc old)
     =.  a
       ?.  ?&  !=(old nothing:yint)
               !(~(is-dark yint-db db.a) old)
@@ -131,10 +123,8 @@
   =+  matcher=(init:yint-match a player what type-thing:yint)
   =.  matcher  ~(match-neighbor yint-match matcher)
   =.  matcher  ~(match-exit yint-match matcher)
-  =.  matcher
-    ?:  (~(is-wizard yint-db db.a) player)
-      ~(match-absolute yint-match matcher)
-    matcher
+  =?  matcher  (~(is-wizard yint-db db.a) player)
+    ~(match-absolute yint-match matcher)
   =^  thing  a  ~(noisy-match-result yint-match matcher)
   ?:  =(thing nothing:yint)
     a

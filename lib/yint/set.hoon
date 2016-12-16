@@ -123,7 +123,7 @@
 
   =+  key-match=(init:yint-match a player keyname type-thing:yint)
   =.  key-match  ~(match-neighbor yint-match key-match)
-  =.  key-match  ~(match-possession yint-match key-match)  
+  =.  key-match  ~(match-possession yint-match key-match)
   =.  key-match  ~(match-me yint-match key-match)
   =.  key-match  ~(match-player yint-match key-match)
   =.  key-match
@@ -167,9 +167,7 @@
   =+  matcher=(init:yint-match a player name type-thing:yint)
   =.  matcher  ~(match-exit yint-match matcher)
   =.  matcher  ~(match-here yint-match matcher)
-  =.  matcher
-    ?.  (~(is-wizard yint-db db.a) player)
-      matcher
+  =?  matcher  (~(is-wizard yint-db db.a) player)
     ~(match-absolute yint-match matcher)
   =+  exit=~(match-result yint-match matcher)
 

@@ -95,7 +95,7 @@
 
 ::  ruby: "hello".starts_with("hell")
 
-::  
+::
 ++  lower-starts-with
   |=  {nedl/tape hstk/tape}
   ^-  ?

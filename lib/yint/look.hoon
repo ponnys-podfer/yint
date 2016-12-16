@@ -17,9 +17,7 @@
       (queue-styx [[[`%br ~ ~] name.record] [[~ ~ ~] "(#"] [[`%un ~ ~] id] [[~ ~ ~] ")"] ~] a)
     (queue-styx [[[`%br ~ ~] name.record] ~] a)
   ::  If there's a description, queue it.
-  =.  a
-    ?:  =("" description.record)
-      a
+  =?  a  !=("" description.record)
     (queue description.record a)
   =^  ret  a  (~(can-doit yint-all a) player loc ~)
   (look-contents player loc "Contents:")
@@ -57,7 +55,7 @@
   ?~  name
     [thing a]
   ?:  =("" name)
-    [thing a]  
+    [thing a]
   =+  matcher=(init:yint-match a player name notype:yint)
   =.  matcher  ~(match-exit yint-match matcher)
   =.  matcher  ~(match-neighbor yint-match matcher)
@@ -95,20 +93,15 @@
     (flag-description thing)
   ==
   =.  a  (queue line a)
-  =.  a
-    ?:  =(description:r "")  a
+  =?  a  !=(description:r "")
     (queue description:r a)
-  =.  a
-    ?:  =(fail:r "")  a
+  =?  a  !=(fail:r "")
     (queue-phrase-with 'fail' [fail:r ~] a)
-  =.  a
-    ?:  =(succ:r "")  a
+  =?  a  !=(succ:r "")
     (queue-phrase-with 'success' [succ:r ~] a)
-  =.  a
-    ?:  =(ofail:r "")  a
+  =?  a  !=(ofail:r "")
     (queue-phrase-with 'ofail' [ofail:r ~] a)
-  =.  a
-    ?:  =(osucc:r "")  a
+  =?  a  !=(osucc:r "")
     (queue-phrase-with 'osucc' [osucc:r ~] a)
   =+  type=(~(typeof yint-db db.a) thing)
   ?:  =(type type-room:yint)
@@ -134,7 +127,7 @@
     ?~  exits
       a
     =.  a  (notify-name player i.exits)
-    $(exits t.exits)      
+    $(exits t.exits)
   ?.  =(location:r nothing:yint)
     =+  n=(getname location:r a)
     =+  loc=(print-ref location:r)
@@ -169,7 +162,7 @@
   =+  ref=(print-ref location:r)
   ?:  (~(is-room yint-db db.a) location:r)
     (queue-phrase-with 'dest' [n ref ~] a)
-  (queue-phrase-with 'carried-by' [n ref ~] a)  
+  (queue-phrase-with 'carried-by' [n ref ~] a)
 
 ++  do-score
   |=  player/@sd
@@ -216,10 +209,8 @@
   |-
   ?~  things
     a
-  =.  a
-    ?:  (~(can-see yint-db db.a) player i.things can-see-loc)
-      (notify-name player i.things)
-    a
+  =?  a  (~(can-see yint-db db.a) player i.things can-see-loc)
+    (notify-name player i.things)
   $(things t.things)
 
 ++  notify-name
