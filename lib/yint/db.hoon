@@ -20,24 +20,29 @@
     records  (~(put by records.db) next.db (record:yint ~))
     next  plusone
   ==
+::
 ++  got
   |=  i/@sd
   ^-  record:yint
   ?:  =(i nothing:yint)  ~|(%nothing !!)
   ?:  =(i ambiguous:yint)  ~|(%ambiguous !!)
   (~(got by records.db) i)
+::
 ++  put
   |=  {i/@sd r/record:yint}
   ^-  database:yint
   :: Only allow setting already allocated records.
   ?>  (~(has by records.db) i)
   db(records (~(put by records.db) i r))
+::
 ++  keys  ~(key by records.db)
+::
 ++  gotname
   |=  i/@sd
   ^-  tape
   =+  r=(~(got by records.db) i)
   name.r
+::
 ++  gotlocation
   |=  i/@sd
   ^-  @sd
@@ -49,17 +54,20 @@
 :: todo: ++clear? (from db.rb)
 ::
 
+::
 ++  next-line-as-tape
   |=  in/(list @t)
   ^-  {tape (list @t)}
   ?~  in  !!
   [(trip i.in) t.in]
+
+::
 ++  next-line-as-sd
   |=  in/(list @t)
   ^-  {@sd (list @t)}
   ?~  in  !!
-  :: it would be nice to be able to use ++rust for @sd even though the following catches
-  :: more errors.
+  :: it would be nice to be able to use ++rust for @sd even though the
+  :: following catches more errors.
   =+  astxt=(trip i.in)
   ?:  =(astxt "-1")
     [nothing:yint t.in]
@@ -67,14 +75,19 @@
     [ambiguous:yint t.in]
   ?:  =(astxt "-3")
     [home:yint t.in]
-  :: todo: small.db has the void have pennies=-35. this needs a real implementation.
+  :: todo: small.db has the void have pennies=-35. this needs a real
+  :: implementation.
   [(sun:si (scan astxt dim:ag)) t.in]
+
+::
 ++  next-line-as-ud
   |=  in/(list @t)
   ^-  {@ud (list @t)}
   ?~  in  !!
   =+  astxt=(trip i.in)
-  [(scan astxt dim:ag) t.in]  
+  [(scan astxt dim:ag) t.in]
+
+::
 ++  restore
   |=  in/(list @t)
   ^-  (unit database:yint)
@@ -111,6 +124,7 @@
     records.db  (~(put by records.db) (sun:si (need newid)) r)
   ==
 
+::
 ++  serialize
   ^-  wall
   %+  weld
@@ -119,11 +133,13 @@
       (weld lines (save-object (sun:si id)))
     (limo "***END OF DUMP***" "" ~)
 
+::
 ++  pushl
   |=  {n/tape lines/wall}
   ^-  wall
   [i=n t=lines]
 
+::
 ++  print-ref
   |=  r/@sd
   ^-  tape
@@ -131,6 +147,7 @@
     (scow %ud (abs:si r))
   (scow %sd r)
 
+::
 ++  save-object
   |=  {id/@sd}
   ^-  wall
@@ -180,7 +197,8 @@
   ^-  {@sd database:yint}
   ?:  =(first what)
     [next:(got first) db]
-  ::  Walk the chain from first until we find the item whose next reference is what.
+  ::  Walk the chain from first until we find the item whose next reference is
+  ::  what.
   =+  before-what=(find-if (enum first) |=(a/@sd =(next:(got a) what)))
   ?~  before-what
     [first db]
@@ -192,6 +210,8 @@
 :::
 :: player.rb
 :::
+
+::
 ++  find-impl
   |=  {a/(map @sd record:yint) p/$-(record:yint ?)}
   |-
@@ -205,14 +225,17 @@
       ~
     rhs
   lhs
+
 :: Performs a depth first walk of the tree returning the first index to match
-:: the passed in predicate. Returns ++nothing:yint if nothing matches.  
+:: the passed in predicate. Returns ++nothing:yint if nothing matches.
 ++  find-record
   |=  p/$-(record:yint ?)
   ^-  @sd
   =+  x=(find-impl records.db p)
   ?~  x  nothing:yint
   (need x)
+
+::
 ++  lookup-player
   |=  name/tape
   ^-  @sd
@@ -222,6 +245,8 @@
       =((dis flags.a type-mask:yint) `@u`type-player:yint)
       =((cuss name.a) (cuss name))
     ==
+
+::
 ++  create-player
   |=  {name/tape password/tape}
   ^-  {@sd database:yint}
@@ -266,6 +291,7 @@
   =+  obj=(~(got by records.db) next)
   $(next next.obj, out [i=next t=out])
 
+::
 ++  list-contains
   |=  {a/(list @sd) b/@sd}
   ^-  ?
@@ -314,6 +340,7 @@
 :: Predicates.rb
 ::
 
+::
 ++  can-link-to
   |=  {who/@sd where/@sd}
   ^-  ?
@@ -323,6 +350,8 @@
     (is-room where)
     ?|((controls who where) (is-link-ok where))
   ==
+
+::
 ++  could-doit
   |=  {who/@sd what/@sd}
   ^-  ?
@@ -332,10 +361,14 @@
   ?:  =(key.what-record nothing:yint)
     %.y
   =+  player-record=(~(got by records.db) who)
-  =/  status/?  ?|(=(who key.what-record) (member key.what-record contents.player-record))
+  =/  status/?  ?|  =(who key.what-record)
+                    (member key.what-record contents.player-record)
+                ==
   ?:  (is-antilock what)
     !status
   status
+
+::
 ++  can-see
   |=  {player/@sd thing/@sd can-see-loc/?}
   ^-  ?
@@ -345,11 +378,13 @@
     ?|(!(is-dark thing) (controls player thing))
   (controls player thing)                           ::  can't see loc
 
+::
 ++  controls
   |=  {who/@sd what/@sd}
   ^-  ?
-  ::  todo: gte/lth don't exist in si and are resolving to the toplevel ones. this
-  ::  should be functionally equivalent to the other implementation but might be bug?
+  ::  todo: gte/lth don't exist in si and are resolving to the toplevel
+  ::  ones. this should be functionally equivalent to the other implementation
+  ::  but might be bug?
   =+  r=(~(get by records.db) what)
   ?~  r
     %.n
@@ -357,6 +392,7 @@
     %.y
   =(who owner:(need r))
 
+::
 ++  can-link
   |=  {who/@sd what/@sd}
   ^-  ?
@@ -365,6 +401,7 @@
     (controls who what)
   ==
 
+::
 ++  payfor
   |=  {who/@sd cost/@ud}
   ^-  {? database:yint}
@@ -376,6 +413,8 @@
     =.  db  (put who who-record(pennies (sub pennies cost)))
     [%.y db]
   [%.n db]
+
+::
 ++  ok-name
   |=  name/tape
   ^-  ?
@@ -389,6 +428,8 @@
   ?:  =(name "home")  %.n
   ?:  =(name "here")  %.n
   %.y
+
+::
 ++  ok-player-name
   |=  name/tape
   ^-  ?

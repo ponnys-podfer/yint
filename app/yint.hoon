@@ -91,20 +91,23 @@
     ?:  =('"' i.in)
       (~(do-say yint-speech a) (need player.a) t.in ~)
     ?:  =(':' i.in)
-      (~(do-pose yint-speech a) (need player.a) t.in ~)    
+      (~(do-pose yint-speech a) (need player.a) t.in ~)
     ?:  (~(can-move yint-move a) (need player.a) in)
       (~(do-move yint-move a) (need player.a) in)
     =+  parsed=(parse-command in)
-    ::  Make a list of candidates that start with the types command (case insensitive)
+    ::  Make a list of candidates that start with the types command (case
+    ::  insensitive)
     =+  lower-command=(cass command.parsed)
     =+  matcher=|=(e/command-entry =([~ 0] (find lower-command name.e)))
     =/  candidates/(list command-entry)  (skim commands matcher)
     ?~  candidates
       (queue-phrase 'huh' a)
-    ::  We should only have one candidate; otherwise the player input is ambigious.
+    ::  We should only have one candidate; otherwise the player input is
+    ::  ambiguous.
     ?.  =(1 (lent candidates))
       (queue-phrase 'huh' a)
-    ::  Some commands are so dangerous that they require the whole thing typed exactly.
+    ::  Some commands are so dangerous that they require the whole thing typed
+    ::  exactly.
     ?.  ?|(!full-match.i.candidates =(name.i.candidates lower-command))
       (queue-phrase 'huh' a)
     (c.i.candidates a parsed)
@@ -211,14 +214,18 @@
   ?~  b
     ~
   [i=[(need b) %diff %sole-effect mor+q] t=~]
+::
 ++  make-notification-list
   |=  a/(map @sd (list sole-effect:sole))
   ^-  (list move)
   =|  out/(list move)
   ?~  a
     ~
-  :(welp (build-notification p.n.a q.n.a) (make-notification-list l.a) (make-notification-list r.a))
-  
+  ;:  welp
+    (build-notification p.n.a q.n.a)
+    (make-notification-list l.a)
+    (make-notification-list r.a)
+  ==
 ::
 ::  Part X: The low level urbit interface stuff. This is mostly based off of
 ::  ~master-morzod's minimal sole app skeleton, with enough modifications to
@@ -259,6 +266,7 @@
     {$clr *}
       [[[ost.bow %diff %sole-effect [%mor ~]] ~] +>.$]
   ==
+::
 ++  coup
   |=  {way/wire saw/(unit tang)}
   ^-  {(list move) _+>.$}
@@ -276,6 +284,7 @@
       logged-in.w  (~(put by logged-in.w) ost.bow ~)
     ==
   [ost.bow %diff %sole-effect %mor ~[(prompt-for ost.bow) wel toconnect tocreate]]~
+::
 ++  pull
   |=  *
   ^-  {(list move) _+>.$}
@@ -289,7 +298,7 @@
       player-out.w
       (~(del by player-out.w) (need player-id))
   ==
-::  Load 
+::  Load phrases from a passed in clay path.
 ++  poke-yint-load-phrases
   |=  arg/path
   ^-  {(list move) _+>.$}
@@ -299,6 +308,7 @@
   :: todo: write something to the syslog instead of the console.
   ~&  [%loaded-phrases]
   [~ +>.$(phrases.w parsed)]
+::
 ++  poke-yint-import
   |=  arg/path
   ^-  {(list move) _+>.$}
@@ -330,6 +340,7 @@
         [%klr [[[`%br ~ `%r] "World being imported. Logging off..."] ~]]
       ==
     ==
+::
 ++  poke-yint-export
   |=  man/knot
   ^-  {(list move) _+>.$}

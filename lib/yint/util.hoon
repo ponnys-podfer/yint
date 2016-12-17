@@ -9,10 +9,12 @@
   |=  {msg/tape a/all:yint}
   ^-  all:yint
   a(syslog [i=msg t=syslog.a])
+::
 ++  phrase
   |=  {p/@t a/all:yint}
   ^-  tape
   (~(got by phrases.a) p)
+::
 ++  phrase-with
   |=  {p/@t args/(list tape) a/all:yint}
   ^-  tape
@@ -42,14 +44,17 @@
   |=  {p/@t a/all:yint}
   ^-  all:yint
   (queue (phrase p a) a)
+::
 ++  queue-phrase-with
   |=  {p/@t args/(list tape) a/all:yint}
   ^-  all:yint
   (queue (phrase-with p args a) a)
+::
 ++  queue-styx
   |=  {msg/styx:^dill a/all:yint}
   ^-  all:yint
   a(messages [i=[%klr msg] t=messages.a])
+::
 ++  queue-notification
   |=  {player/@sd msg/styx:^dill a/all:yint}
   ^-  all:yint
@@ -57,6 +62,7 @@
   ?~  old
     a(notifications (~(put by notifications.a) player [i=[%klr msg] t=~]))
   a(notifications (~(put by notifications.a) player [i=[%klr msg] t=(need old)]))
+::
 ++  parse-dbref
   |=  s/tape
   ^-  @sd
@@ -66,14 +72,14 @@
   ?~  id
     nothing:yint
   (sun:si (need id))
-
+::
 ++  print-ref
   |=  r/@sd
   ^-  tape
   ?:  (syn:si r)                                    ::  if positive
     (scow %ud (abs:si r))
   (scow %sd r)
-
+::
 ::  "one;two;three" -> <<"one" "two" "three">>
 ++  tokenize
   |=  {b/@tD t/tape}
@@ -92,9 +98,6 @@
   ?~  q.s
     $(t "", out [i=p.s t=out])
   $(t t.q.s, out [i=p.s t=out])
-
-::  ruby: "hello".starts_with("hell")
-
 ::
 ++  lower-starts-with
   |=  {nedl/tape hstk/tape}
@@ -102,7 +105,6 @@
   =.  nedl  (cass nedl)
   =.  hstk  (cass hstk)
   =([~ 0] (find nedl hstk))
-
 :: Get the location name for a thing
 ++  getname
   |=  {loc/@sd a/all:yint}
@@ -112,7 +114,6 @@
   ?:  =(loc home:yint)
     (phrase 'loc-home' a)
   name:(~(got yint-db db.a) loc)
-
 ::  Misc function that starts quiting a player's session.
 ++  do-quit
   |=  {a/all:yint}
@@ -121,5 +122,4 @@
   =+  record=(~(got yint-db db.a) id)
   =.  a  (log "DISCONNECTED {<name.record>}({<id>}) from {<src.a>}" a)
   a(player ~)
-
 --

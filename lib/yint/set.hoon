@@ -6,7 +6,7 @@
 =,  yint-util
 !:
 |_  a/all:yint
-
+::
 ++  do-name
   |=  {player/@sd name/tape newname/tape}
   ^-  all:yint
@@ -20,7 +20,7 @@
   ?:  (~(is-player yint-db db.a) thing)
     (impl-name-player thing player newname)
   (impl-name-thing thing player name newname)
-
+::
 ++  impl-name-player
   |=  {thing/@sd player/@sd unparsed/tape}
   ^-  all:yint
@@ -40,7 +40,7 @@
     (queue-phrase 'bad-player-name' a)
   =.  a  (~(name-set yint-all a) thing newname)
   (queue-phrase 'name-set' a)
-
+::
 ++  impl-name-thing
   |=  {thing/@sd player/@sd name/tape newname/tape}
   ^-  all:yint
@@ -48,7 +48,7 @@
     (queue-phrase 'not-a-reasonable-name' a)
   =.  a  (~(name-set yint-all a) thing newname)
   (queue-phrase 'name-set' a)
-
+::
 ++  do-describe
   |=  {player/@sd name/tape description/tape}
   ^-  all:yint
@@ -57,7 +57,7 @@
     a
   =.  a  (~(description-set yint-all a) thing description)
   (queue-phrase 'desc-set' a)
-
+::
 ++  do-fail
   |=  {player/@sd name/tape msg/tape}
   ^-  all:yint
@@ -66,7 +66,7 @@
     a
   =.  a  (~(fail-set yint-all a) thing msg)
   (queue-phrase 'message-set' a)
-
+::
 ++  do-success
   |=  {player/@sd name/tape msg/tape}
   ^-  all:yint
@@ -75,7 +75,7 @@
     a
   =.  a  (~(success-set yint-all a) thing msg)
   (queue-phrase 'message-set' a)
-
+::
 ++  do-osuccess
   |=  {player/@sd name/tape msg/tape}
   ^-  all:yint
@@ -84,7 +84,7 @@
     a
   =.  a  (~(osuccess-set yint-all a) thing msg)
   (queue-phrase 'message-set' a)
-
+::
 ++  do-ofail
   |=  {player/@sd name/tape msg/tape}
   ^-  all:yint
@@ -93,9 +93,7 @@
     a
   =.  a  (~(ofail-set yint-all a) thing msg)
   (queue-phrase 'message-set' a)
-
-::  todo: ++do-lock
-
+::
 ++  do-lock
   |=  {player/@sd name/tape keyname/tape}
   ^-  all:yint
@@ -148,7 +146,7 @@
     (queue-phrase 'anti-locked' a)
   =.  a  (~(flag-unset yint-all a) thing antilock:yint)
   (queue-phrase 'locked' a)
-
+::
 ++  do-unlock
   |=  {player/@sd name/tape}
   ^-  all:yint
@@ -158,9 +156,7 @@
   =.  a  (~(key-set yint-all a) thing nothing:yint)
   =.  a  (~(flag-unset yint-all a) thing antilock:yint)
   (queue-phrase 'unlocked' a)
-
-::  todo: ++do-unlink
-
+::
 ++  do-unlink
   |=  {player/@sd name/tape}
   ^-  all:yint
@@ -186,7 +182,7 @@
     =.  a  (~(location-set yint-all a) exit nothing:yint)
     (queue-phrase 'drop-to-removed' a)
   (queue-phrase 'cant-unlink-that' a)
-
+::
 ++  do-chown
   |=  {player/@sd name/tape new-owner/tape}
   ^-  all:yint
@@ -208,6 +204,7 @@
 
 ::  todo: ++do-set
 
+::
 ++  match-controlled
   |=  {player/@sd name/tape}
   ^-  {@sd all:yint}

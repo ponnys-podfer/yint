@@ -7,7 +7,7 @@
 =,  yint-util
 !:
 |_  a/all:yint
-
+::
 ++  do-say
   |=  {player/@sd arg1/tape arg2/tape}
   ^-  all:yint
@@ -21,7 +21,7 @@
     player
     (phrase-with 'someone-says' [name:(~(got yint-db db.a) player) msg ~] a)
   ==
-
+::
 ++  do-pose
   |=  {player/@sd arg1/tape arg2/tape}
   ^-  all:yint
@@ -36,8 +36,8 @@
 ::  todo: ++do-gripe
 ::  todo: ++do-page
 
-::  Helper function to send a notify everyone in a list with a particular message besides
-::  one person.
+::  Helper function to send a notify everyone in a list with a particular
+::  message besides one person.
 ++  notify-except
   |=  {first/@sd exception/@sd msg/tape}
   ^-  all:yint
@@ -56,7 +56,7 @@
       (queue-notification i msg a)
     a
   $(l t.l)
-
+::
 ++  reconstruct-message
   |=  {arg1/tape arg2/tape}
   ^-  tape

@@ -14,6 +14,7 @@
 =,  yint-util
 !:
 |%
+::
 ++  matcher-instance
   $:  a/all:yint
       exact-match/@sd
@@ -41,6 +42,7 @@
   ?~  a
     state
   $(a t.a, state (b i.a state))
+::
 ++  match-player
   ^-  matcher-instance
   ?~  match-name.m
@@ -61,6 +63,7 @@
   ?:  =(match nothing:yint)
     m
   m(exact-match match)
+::
 ++  match-me
   ^-  matcher-instance
   ?~  match-name.m
@@ -68,7 +71,7 @@
   ?.  =(match-name.m "me")
     m
   m(exact-match match-who.m)
-
+::
 ++  match-here
   ^-  matcher-instance
   ?~  match-name.m
@@ -79,18 +82,17 @@
   ?:  =(loc nothing:yint)
     m
   m(exact-match loc)
-
+::
 ++  match-possession
   ^-  matcher-instance
-  (match-list contents:(~(got yint-db db.a.m) match-who.m))  
-
+  (match-list contents:(~(got yint-db db.a.m) match-who.m))
+::
 ++  match-neighbor
   ^-  matcher-instance
   =+  loc=(~(gotlocation yint-db db.a.m) match-who.m)
   ?:  =(loc nothing:yint)
     m
   (match-list contents:(~(got yint-db db.a.m) loc))
-
 ::
 ++  match-exit
   ^-  matcher-instance
@@ -128,7 +130,7 @@
       ?:  =(match-name.m token)
         m(exact-match (choose-thing exact-match.m exit))
       m
-
+::
 ++  match-everything
   ^-  matcher-instance
   =.  m  ~(match-exit yint-match m)
@@ -140,7 +142,7 @@
     =.  m  ~(match-absolute yint-match m)
     ~(match-player yint-match m)
   m
-
+::
 ++  match-result
   ^-  @sd
   ?.  =(exact-match.m nothing:yint)
@@ -150,13 +152,13 @@
   ?:  =(match-count.m 1)
     last-match.m
   ambiguous:yint
-
+::
 ++  last-match-result
   ^-  @sd
   ?.  =(exact-match.m nothing:yint)
     exact-match.m
   last-match.m
-
+::
 ++  noisy-match-result
   ^-  {@sd all:yint}
   =+  r=match-result
@@ -165,11 +167,12 @@
     (queue-phrase 'dont-see-that' a.m)
   ?:  =(r ambiguous:yint)
     :-  nothing:yint
-    (queue-phrase 'which-one' a.m)  
+    (queue-phrase 'which-one' a.m)
   [r a.m]
 
 ::::::::::::: "Private"
 
+::
 ++  absolute-name
   ^-  @sd
   ?~  match-name.m
@@ -177,8 +180,7 @@
   ?.  =(i.match-name.m number-token:yint)
     nothing:yint
   (parse-dbref:yint-util t.match-name.m)
-
-
+::
 ++  match-list
   |=  first/@sd
   =+  a-n=absolute-name
@@ -198,7 +200,7 @@
       m(exact-match (choose-thing exact-match.m i))
     :: todo: final else case is hard; need regexps or a custom space chomper.
     m
-
+::
 :: Given a choice of two things, pick one of them (one or both things may be
 :: nothing:yint)
 ++  choose-thing
@@ -219,7 +221,7 @@
       thing2
     (choose-thing-part-2 thing1 thing2)
   (choose-thing-part-2 thing1 thing2)
-
+::
 ++  choose-thing-part-2
   |=  {thing1/@sd thing2/@sd}
   ^-  @sd
@@ -232,7 +234,7 @@
       thing2
     (choose-thing-part-3 thing1 thing2)
   (choose-thing-part-3 thing1 thing2)
-
+::
 ++  choose-thing-part-3
   |=  {thing1/@sd thing2/@sd}
   ^-  @sd

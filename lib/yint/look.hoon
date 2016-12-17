@@ -7,6 +7,7 @@
 =,  yint-util
 !:
 |_  a/all:yint
+::
 ++  look-room
   |=  {player/@sd loc/@sd}
   ^-  all:yint
@@ -21,7 +22,7 @@
     (queue description.record a)
   =^  ret  a  (~(can-doit yint-all a) player loc ~)
   (look-contents player loc "Contents:")
-
+::
 ++  do-look-at
   |=  name/tape
   ^-  all:yint
@@ -48,7 +49,7 @@
     =.  a  (look-simple player thing)
     (look-contents player thing (phrase 'carrying-list' a))
   (look-simple player thing)
-
+::
 ++  get-thing-to-examine
   |=  {player/@sd name/tape}
   =+  thing=location:(~(got yint-db db.a) player)
@@ -65,7 +66,7 @@
   =.  matcher  ~(match-here yint-match matcher)
   =.  matcher  ~(match-me yint-match matcher)
   ~(noisy-match-result yint-match matcher)
-
+::
 ++  do-examine
   |=  {player/@sd name/tape}
   ^-  all:yint
@@ -114,7 +115,7 @@
     (examine-exit player r)
   ~&  [%weird-thing-examined name thing]
   a
-
+::
 ++  examine-room
   |=  {player/@sd r/record:yint}
   ^-  all:yint
@@ -133,7 +134,7 @@
     =+  loc=(print-ref location:r)
     (queue-phrase-with 'dropped-go-to' [n loc ~] a)
   a
-
+::
 ++  examine-thing
   |=  {player/@sd r/record:yint}
   ^-  all:yint
@@ -150,7 +151,7 @@
     =+  ref=(print-ref location:r)
     (queue-phrase-with 'location' [n ref ~] a)
   a
-
+::
 ++  examine-exit
   |=  {player/@sd r/record:yint}
   ^-  all:yint
@@ -163,7 +164,7 @@
   ?:  (~(is-room yint-db db.a) location:r)
     (queue-phrase-with 'dest' [n ref ~] a)
   (queue-phrase-with 'carried-by' [n ref ~] a)
-
+::
 ++  do-score
   |=  player/@sd
   ^-  all:yint
@@ -171,7 +172,7 @@
   ?:  =(--1 count)
     (queue-phrase 'you-have-a-penny' a)
   (queue-phrase-with 'you-have-pennies' [(scow %ud (abs:si count)) ~] a)
-
+::
 ++  do-inventory
   |=  player/@sd
   ^-  all:yint
@@ -189,6 +190,7 @@
 
 ::  todo: do-find
 
+::
 ++  look-contents
   |=  {player/@sd loc/@sd contents-name/tape}
   ^-  all:yint
@@ -212,7 +214,7 @@
   =?  a  (~(can-see yint-db db.a) player i.things can-see-loc)
     (notify-name player i.things)
   $(things t.things)
-
+::
 ++  notify-name
   |=  {player/@sd thing/@sd}
   ^-  all:yint
@@ -221,7 +223,7 @@
     =+  id=(print-ref thing)
     (queue-styx [[[~ ~ ~] n] [[~ ~ ~] "(#"] [[`%un ~ ~] id] [[~ ~ ~] ")"] ~] a)
   (queue n a)
-
+::
 ++  look-simple
   |=  {player/@sd thing/@sd}
   ^-  all:yint
@@ -229,7 +231,7 @@
   ?:  =("" desc)
     (queue-phrase 'see-nothing' a)
   (queue desc a)
-
+::
 ++  flag-description
   |=  thing/@sd
   ^-  tape

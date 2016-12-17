@@ -10,7 +10,7 @@
 ::
 :: move.rb
 ::
-
+::
 ++  moveto
   |=  {what/@sd where/@sd}
   ^-  all:yint
@@ -30,7 +30,7 @@
   =.  a  (~(next-set yint-all a) what where-contents)
   =.  a  (~(contents-set yint-all a) where what)
   (~(location-set yint-all a) what where)
-
+::
 ++  enter-room
   |=  {player/@sd loc/@sd}
   ^-  all:yint
@@ -116,7 +116,7 @@
   ?:  can
     (enter-room player location:(~(got yint-db db.a) exit))
   a
-
+::
 ++  do-get
   |=  {player/@sd what/tape}
   ^-  all:yint
@@ -155,7 +155,7 @@
     =.  a  (~(location-set yint-all a) thing player)
     (queue-phrase 'exit-taken' a)
   (queue-phrase 'cant-take' a)
-
+::
 ++  do-drop
   |=  {player/@sd name/tape}
   ^-  all:yint
@@ -197,6 +197,7 @@
 
 ::  "Private"
 
+::
 ++  send-contents
   |=  {loc/@sd dest/@sd}
   ^-  all:yint
@@ -207,7 +208,7 @@
   =+  contents=contents:(~(got yint-db db.a) loc)
   =^  r  a  (~(reverse yint-all a) contents)
   (~(contents-set yint-all a) loc r)
-
+::
 ++  set-all-contents-nothing
   |=  first/@sd
   ::  remove the location of everything in the list.
@@ -218,7 +219,6 @@
   =+  x=i.l
   =.  a  (~(location-set yint-all a) x nothing:yint)
   $(l t.l)
-
 ::  Helper gate for send-contents
 ++  send-contents-move
   |=  {first/@sd loc/@sd dest/@sd a/all:yint}
@@ -237,5 +237,4 @@
     dest
   =.  a  (moveto first i)
   $(first rest)
-
 --
