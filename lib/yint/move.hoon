@@ -98,7 +98,12 @@
   ^-  all:yint
   ?:  =(direction "home")
     =+  loc=location:(~(got yint-db db.a) player)
-    ::   todo: @speech.notify_except...
+    =?  a  !=(loc nothing:yint)
+      %-  ~(notify-except yint-speech a)  :*
+        contents:(~(got yint-db db.a) loc)
+        player
+        (weld name:(~(got yint-db db.a) player) " goes home.")
+      ==
     =.  a  (queue-phrase 'no-place-like-home' a)
     =.  a  (queue-phrase 'no-place-like-home' a)
     =.  a  (queue-phrase 'no-place-like-home' a)
@@ -192,8 +197,17 @@
     (queue-phrase 'dropped' a)
   =.  a  (moveto thing loc)
   =.  a  (queue-phrase 'dropped' a)
-  ::  todo: @speech.notify_except....
-  a
+  %-  ~(notify-except yint-speech a)  :*
+    contents:(~(got yint-db db.a) loc)
+    player
+    %^  phrase-with
+      'dropped-thing'
+      :~
+        name:(~(got yint-db db.a) player)
+        name:(~(got yint-db db.a) thing)
+      ==
+      a
+  ==
 
 ::  "Private"
 

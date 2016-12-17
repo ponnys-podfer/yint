@@ -43,7 +43,9 @@
   =.  matcher  ~(match-exit yint-match matcher)
   =.  matcher  ~(match-neighbor yint-match matcher)
   =.  matcher  ~(match-possession yint-match matcher)
-  ::  todo: implement is-wizard matching here.
+  =?  matcher  (~(is-wizard yint-db db.a) player)
+    =.  matcher  ~(match-absolute yint-match matcher)
+    ~(match-player yint-match matcher)
   =.  matcher  ~(match-here yint-match matcher)
   =.  matcher  ~(match-me yint-match matcher)
   =^  thing  a  ~(noisy-match-result yint-match matcher)
@@ -69,7 +71,8 @@
   =.  matcher  ~(match-neighbor yint-match matcher)
   =.  matcher  ~(match-possession yint-match matcher)
   =.  matcher  ~(match-absolute yint-match matcher)
-  ::  todo: implement is-wizard matching for match_player.
+  =?  matcher  (~(is-wizard yint-db db.a) player)
+    ~(match-player yint-match matcher)
   =.  matcher  ~(match-here yint-match matcher)
   =.  matcher  ~(match-me yint-match matcher)
   ~(noisy-match-result yint-match matcher)
