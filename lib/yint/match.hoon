@@ -49,7 +49,8 @@
     m
   ?.  =(i.match-name.m lookup-token:yint)
     m
-  =^  can-afford  db.a.m  (~(payfor yint-db db.a.m) match-who.m lookup-cost:yint)
+  =^  can-afford  db.a.m
+    (~(payfor yint-db db.a.m) match-who.m lookup-cost:yint)
   ?.  can-afford
     m
   =+  player-id=(~(lookup-player yint-db db.a.m) q:(trim 1 match-name.m))
@@ -210,8 +211,6 @@
     thing2
   ?:  =(thing2 nothing:yint)
     thing1
-  ::  note: this construct seems really bad; is there a much easier way to handle
-  ::  ratsnests of nested ifs in hoon?
   ?:  !=(preferred-type.m notype:yint)
     ?:  =((~(typeof yint-db db.a.m) thing1) preferred-type.m)
       ?:  =((~(typeof yint-db db.a.m) thing2) preferred-type.m)

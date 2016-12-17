@@ -15,7 +15,14 @@
   =.  a
     ?:  (~(can-link-to yint-db db.a) player loc)
       =+  id=(print-ref loc)
-      (queue-styx [[[`%br ~ ~] name.record] [[~ ~ ~] "(#"] [[`%un ~ ~] id] [[~ ~ ~] ")"] ~] a)
+      %+  queue-styx
+        :~
+          [[`%br ~ ~] name.record]
+          [[~ ~ ~] "(#"]
+          [[`%un ~ ~] id]
+          [[~ ~ ~] ")"]
+        ==
+        a
     (queue-styx [[[`%br ~ ~] name.record] ~] a)
   ::  If there's a description, queue it.
   =?  a  !=("" description.record)

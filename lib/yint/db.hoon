@@ -1,6 +1,7 @@
 :: All methods for accessing, modifying and validating against the database.
 ::
-:: This door corresponds to predicates.rb, db.rb, util.rb and parts of player.rb.
+:: This door corresponds to predicates.rb, db.rb, util.rb and parts of
+:: player.rb.
 ::
 /-  yint
 !:
@@ -297,39 +298,40 @@
   ^-  ?
   !=(~ (find (limo b ~) a))
 
-:: todo: I was here yesterday. needed for could_doit, which is needed for can_doit,
-:: needed for look.
+:: todo: I was here yesterday. needed for could_doit, which is needed for
+:: can_doit, needed for look.
 ::
 ++  member
   |=  {thing/@sd start/@sd}
   ^-  ?
   (list-contains (enum start) start)
-
+::
 ++  masked-type
   |=  type/@u
   |=  i/@sd
   ^-  ?
   =+  a=(~(got by records.db) i)
   =((dis flags.a type-mask:yint) type)
+::
 ++  has-bit
   |=  mask/@u
   |=  i/@sd
   ^-  ?
   =+  a=(~(got by records.db) i)
   !=((dis flags.a mask) 0)
-
+::
 ++  is-antilock  (has-bit antilock:yint)
 ++  is-dark      (has-bit dark:yint)
 ++  is-link-ok   (has-bit link-ok:yint)
 ++  is-sticky    (has-bit sticky:yint)
 ++  is-temple    (has-bit temple:yint)
 ++  is-wizard    (has-bit wizard:yint)
-
+::
 ++  is-exit      (masked-type type-exit:yint)
 ++  is-player    (masked-type type-player:yint)
 ++  is-room      (masked-type type-room:yint)
 ++  is-thing     (masked-type type-thing:yint)
-
+::
 ++  typeof
   |=  i/@sd
   ^-  @u

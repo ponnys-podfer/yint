@@ -101,7 +101,8 @@
       ?.  can-pay
         (queue-phrase 'too-poor-to-link' a)
       (complete-do-link-exit player thing room)
-    =^  can-pay  db.a  (~(payfor yint-db db.a) player (add link-cost:yint exit-cost:yint))
+    =^  can-pay  db.a
+      (~(payfor yint-db db.a) player (add link-cost:yint exit-cost:yint))
     ?.  can-pay
       (queue-phrase 'cost-two-exit' a)
     =+  o=owner:(~(got yint-db db.a) thing)
@@ -188,8 +189,9 @@
     type-thing:yint     :: type
     ""                  :: password
   ==
-  ::  todo: if I could reliably set some of those default values to NOTHING, I could
-  ::  use the following and cut down duplicates.
+  ::  todo: if I could reliably set some of those default values to NOTHING, I
+  ::  could use the following and cut down duplicates.
+  ::
   :: =.  r  %=  r
   ::   name      name
   ::   location  player

@@ -30,7 +30,11 @@
     a
   =+  msg=(reconstruct-message arg1 arg2)
   =+  name=name:(~(got yint-db db.a) player)
-  (notify-except contents:(~(got yint-db db.a) loc) nothing:yint :(weld name " " msg))
+  %-  notify-except  :*
+    contents:(~(got yint-db db.a) loc)
+    nothing:yint
+    :(weld name " " msg)
+  ==
 
 ::  todo: ++do-wall
 ::  todo: ++do-gripe
@@ -50,7 +54,8 @@
     ?:  ?&  (~(is-player yint-db db.a) i)
             !=(i exception)
         ==
-      ::  note: not in original since we separate out current player from others.
+      ::  note: not in original since we separate out current player from
+      ::  others.
       ?:  =(`i player.a)
         (queue msg a)
       (queue-notification i msg a)
